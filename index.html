@@ -468,7 +468,10 @@
         dataZone.addEventListener('dragover', e => { e.preventDefault(); dataZone.classList.add('dragover'); });
         dataZone.addEventListener('dragleave', () => dataZone.classList.remove('dragover'));
         dataZone.addEventListener('drop', e => { e.preventDefault(); dataZone.classList.remove('dragover'); if (e.dataTransfer.files[0]) processDataFile(e.dataTransfer.files[0]); });
-        dataZone.addEventListener('click', () => dataInput.click());
+        dataZone.addEventListener('click', (e) => {
+    if (e.target.closest('label')) return;
+    dataInput.click();
+});
 
         const summaryZone = document.getElementById('summaryZone');
         const summaryInput = document.getElementById('summaryInput');
@@ -476,7 +479,10 @@
         summaryZone.addEventListener('dragover', e => { e.preventDefault(); summaryZone.classList.add('dragover'); });
         summaryZone.addEventListener('dragleave', () => summaryZone.classList.remove('dragover'));
         summaryZone.addEventListener('drop', e => { e.preventDefault(); summaryZone.classList.remove('dragover'); if (e.dataTransfer.files[0]) processSummaryFile(e.dataTransfer.files[0]); });
-        summaryZone.addEventListener('click', () => summaryInput.click());
+        summaryZone.addEventListener('click', (e) => {
+    if (e.target.closest('label')) return;
+    summaryInput.click();
+});
 
         function processDataFile(file) {
             document.getElementById('loading').classList.add('show');
