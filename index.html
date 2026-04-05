@@ -7,7 +7,6 @@
     <link rel="icon" type="image/png" href="logo.png">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             /* 🎨 Paleta Huboo - Dark Mode Only */
@@ -43,14 +42,10 @@
             --shadow-violet: 0 0 25px rgba(115, 80, 193, 0.4);
             
             /* Colores semánticos dark */
-            --success: #22c55e;
-            --success-glow: rgba(34, 197, 94, 0.3);
-            --warning: #f59e0b;
-            --warning-glow: rgba(245, 158, 11, 0.3);
-            --danger: #ef4444;
-            --danger-glow: rgba(239, 68, 68, 0.3);
-            --info: #60a5fa;
-            --info-glow: rgba(96, 165, 250, 0.3);
+            --success: #22c55e; --success-glow: rgba(34, 197, 94, 0.3);
+            --warning: #f59e0b; --warning-glow: rgba(245, 158, 11, 0.3);
+            --danger: #ef4444; --danger-glow: rgba(239, 68, 68, 0.3);
+            --info: #60a5fa; --info-glow: rgba(96, 165, 250, 0.3);
             
             /* Transiciones */
             --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -59,7 +54,6 @@
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         html { scroll-behavior: smooth; }
         
         body {
@@ -75,760 +69,312 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* ✨ Background animado sutil */
         body::before {
-            content: '';
-            position: fixed;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(115, 80, 193, 0.1) 0%, transparent 40%),
-                radial-gradient(circle at 80% 20%, rgba(73, 242, 177, 0.08) 0%, transparent 40%);
-            pointer-events: none;
-            z-index: -1;
-            animation: floatBg 20s ease-in-out infinite;
+            content: ''; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 20% 80%, rgba(115, 80, 193, 0.1) 0%, transparent 40%),
+                        radial-gradient(circle at 80% 20%, rgba(73, 242, 177, 0.08) 0%, transparent 40%);
+            pointer-events: none; z-index: -1; animation: floatBg 20s ease-in-out infinite;
         }
-        
-        @keyframes floatBg {
-            0%, 100% { transform: translateX(0) translateY(0); }
-            50% { transform: translateX(2%) translateY(-2%); }
-        }
+        @keyframes floatBg { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(2%,-2%); } }
 
-        /* 🎯 Layout Principal */
-        .dashboard { 
-            max-width: 1920px; 
-            margin: 0 auto; 
-            animation: fadeIn 0.6s ease-out;
-        }
+        .dashboard { max-width: 1920px; margin: 0 auto; animation: fadeIn 0.6s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        /* 🏷️ Header Dark Premium */
         header {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 28px 36px;
-            margin-bottom: 28px;
-            box-shadow: var(--shadow-lg), var(--shadow-violet);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
-            border: 1px solid var(--border-color);
-            position: sticky;
-            top: 20px;
-            z-index: 100;
-            backdrop-filter: blur(20px);
+            background: var(--bg-card); border-radius: 24px; padding: 28px 36px; margin-bottom: 28px;
+            box-shadow: var(--shadow-lg), var(--shadow-violet); display: flex; justify-content: space-between;
+            align-items: center; flex-wrap: wrap; gap: 24px; border: 1px solid var(--border-color);
+            position: sticky; top: 20px; z-index: 100; backdrop-filter: blur(20px);
         }
-        
-        .header-brand {
-            display: flex;
-            align-items: center;
-            gap: 18px;
-        }
-        
+        .header-brand { display: flex; align-items: center; gap: 18px; }
         .logo-container {
-            width: 52px;
-            height: 52px;
-            border-radius: 16px;
+            width: 52px; height: 52px; border-radius: 16px;
             background: linear-gradient(135deg, var(--huboo-violet), var(--huboo-mint));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: var(--shadow-glow);
-            transition: transform var(--transition-normal);
-            position: relative;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+            box-shadow: var(--shadow-glow); transition: transform var(--transition-normal); position: relative;
         }
-        
         .logo-container::after {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2) 50%, transparent 60%);
-            transform: translateX(-100%);
-            transition: transform 0.6s ease;
+            transform: translateX(-100%); transition: transform 0.6s ease;
         }
-        
-        .logo-container:hover::after {
-            transform: translateX(100%);
-        }
-        
-        .logo-container:hover {
-            transform: scale(1.08) rotate(3deg);
-        }
-        
-        .logo-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
-        }
+        .logo-container:hover::after { transform: translateX(100%); }
+        .logo-container:hover { transform: scale(1.08) rotate(3deg); }
+        .logo-container img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3)); }
         
         .header-center { flex: 1; min-width: 280px; }
         header h1 { 
-            font-size: 1.9rem; 
-            font-weight: 800;
+            font-size: 1.9rem; font-weight: 800;
             background: linear-gradient(135deg, var(--huboo-white), var(--huboo-mint));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 6px;
-            letter-spacing: -0.5px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            margin-bottom: 6px; letter-spacing: -0.5px;
         }
-        header p { 
-            color: var(--text-secondary); 
-            font-size: 1rem;
-            font-weight: 500;
-        }
+        header p { color: var(--text-secondary); font-size: 1rem; font-weight: 500; }
         .last-updated { 
-            color: var(--huboo-mint); 
-            font-size: 0.85rem; 
-            margin-top: 8px;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: rgba(73, 242, 177, 0.12);
-            padding: 4px 12px;
-            border-radius: 50px;
-            display: inline-flex;
+            color: var(--huboo-mint); font-size: 0.85rem; margin-top: 8px; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: rgba(73, 242, 177, 0.12); padding: 4px 12px; border-radius: 50px;
         }
-        .last-updated::before {
-            content: "●";
-            animation: pulse 2s infinite;
-            font-size: 0.7rem;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.9); }
-        }
+        .last-updated::before { content: "●"; animation: pulse 2s infinite; font-size: 0.7rem; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(0.9); } }
 
-        /* 📤 Upload Zones - Dark Premium */
-        .upload-container {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 24px;
-            margin-bottom: 28px;
-        }
-        
-        @media (max-width: 900px) { 
-            .upload-container { grid-template-columns: 1fr; } 
-        }
+        .upload-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; margin-bottom: 28px; }
+        @media (max-width: 900px) { .upload-container { grid-template-columns: 1fr; } }
 
         .upload-zone {
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 36px 32px;
-            border: 2px dashed var(--border-color);
-            text-align: center;
-            transition: all var(--transition-normal);
-            cursor: pointer;
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card); border-radius: 24px; padding: 36px 32px;
+            border: 2px dashed var(--border-color); text-align: center; transition: all var(--transition-normal);
+            cursor: pointer; position: relative; overflow: hidden;
         }
-        
         .upload-zone::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 4px;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
             background: linear-gradient(90deg, var(--huboo-violet), var(--huboo-mint), var(--huboo-violet));
-            background-size: 200% 100%;
-            opacity: 0;
-            transition: opacity var(--transition-normal);
+            background-size: 200% 100%; opacity: 0; transition: opacity var(--transition-normal);
             animation: gradientShift 3s ease infinite;
         }
-        
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-        
-        .upload-zone:hover, 
-        .upload-zone.dragover { 
-            border-color: var(--huboo-violet);
-            transform: translateY(-6px);
+        @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .upload-zone:hover, .upload-zone.dragover { 
+            border-color: var(--huboo-violet); transform: translateY(-6px);
             box-shadow: var(--shadow-lg), var(--shadow-violet);
         }
-        .upload-zone:hover::before,
-        .upload-zone.dragover::before { opacity: 1; }
-        
-        .upload-zone.hover { border-color: var(--huboo-mint); }
-        .upload-zone.summary:hover { border-color: var(--huboo-violet); }
+        .upload-zone:hover::before, .upload-zone.dragover::before { opacity: 1; }
         .upload-zone.loaded { border-style: solid; }
         .upload-zone.data.loaded { border-color: var(--huboo-mint); box-shadow: 0 0 30px rgba(73, 242, 177, 0.15); }
         .upload-zone.summary.loaded { border-color: var(--huboo-violet); box-shadow: 0 0 30px rgba(115, 80, 193, 0.15); }
 
-        .upload-icon { 
-            font-size: 4rem; 
-            margin-bottom: 20px; 
-            display: block;
-            transition: transform var(--transition-normal);
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
-        }
+        .upload-icon { font-size: 4rem; margin-bottom: 20px; display: block; transition: transform var(--transition-normal); }
         .upload-zone:hover .upload-icon { transform: scale(1.15) rotate(8deg); }
-        
-        .upload-zone h3 { 
-            font-size: 1.35rem; 
-            margin-bottom: 10px; 
-            color: var(--text-primary);
-            font-weight: 700;
-        }
-        .upload-zone p { 
-            color: var(--text-secondary); 
-            font-size: 0.95rem; 
-            margin-bottom: 20px; 
-            line-height: 1.4;
-        }
+        .upload-zone h3 { font-size: 1.35rem; margin-bottom: 10px; color: var(--text-primary); font-weight: 700; }
+        .upload-zone p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 20px; }
         .upload-zone .file-type { 
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 18px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 700;
-            margin-bottom: 22px;
-            text-transform: uppercase;
-            letter-spacing: 0.8px;
+            display: inline-flex; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 50px;
+            font-size: 0.8rem; font-weight: 700; margin-bottom: 22px; text-transform: uppercase; letter-spacing: 0.8px;
         }
-        .upload-zone.data .file-type { 
-            background: rgba(73, 242, 177, 0.2); 
-            color: var(--huboo-mint);
-            border: 1px solid rgba(73, 242, 177, 0.3);
-        }
-        .upload-zone.summary .file-type { 
-            background: rgba(115, 80, 193, 0.2); 
-            color: var(--huboo-violet-light);
-            border: 1px solid rgba(115, 80, 193, 0.3);
-        }
+        .upload-zone.data .file-type { background: rgba(73, 242, 177, 0.2); color: var(--huboo-mint); border: 1px solid rgba(73, 242, 177, 0.3); }
+        .upload-zone.summary .file-type { background: rgba(115, 80, 193, 0.2); color: var(--huboo-violet-light); border: 1px solid rgba(115, 80, 193, 0.3); }
 
         .upload-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            padding: 16px 36px;
-            border-radius: 50px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all var(--transition-fast);
-            border: none;
-            font-size: 1rem;
-            background: linear-gradient(135deg, var(--huboo-violet) 0%, #5a3a9e 100%);
-            color: white;
-            box-shadow: 0 6px 20px rgba(115, 80, 193, 0.5);
-            position: relative;
-            overflow: hidden;
+            display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+            padding: 16px 36px; border-radius: 50px; font-weight: 700; cursor: pointer;
+            transition: all var(--transition-fast); border: none; font-size: 1rem;
+            background: linear-gradient(135deg, var(--huboo-violet) 0%, #5a3a9e 100%); color: white;
+            box-shadow: 0 6px 20px rgba(115, 80, 193, 0.5); position: relative; overflow: hidden;
         }
-        
         .upload-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
             transition: left 0.5s ease;
         }
-        
         .upload-btn:hover::before { left: 100%; }
-        
         .upload-zone.data .upload-btn { 
             background: linear-gradient(135deg, var(--huboo-mint) 0%, #2dd4bf 100%); 
-            color: var(--huboo-charcoal);
-            box-shadow: 0 6px 20px rgba(73, 242, 177, 0.5);
+            color: var(--huboo-charcoal); box-shadow: 0 6px 20px rgba(73, 242, 177, 0.5);
         }
-        .upload-btn:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 12px 35px rgba(115, 80, 193, 0.7);
-        }
-        .upload-zone.data .upload-btn:hover {
-            box-shadow: 0 12px 35px rgba(73, 242, 177, 0.7);
-        }
-        .upload-btn:active { transform: translateY(-2px); }
+        .upload-btn:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(115, 80, 193, 0.7); }
+        .upload-zone.data .upload-btn:hover { box-shadow: 0 12px 35px rgba(73, 242, 177, 0.7); }
         .upload-btn input { display: none; }
 
         .file-info {
-            display: none;
-            margin-top: 24px;
-            padding: 18px 24px;
+            display: none; margin-top: 24px; padding: 18px 24px;
             background: linear-gradient(135deg, rgba(73, 242, 177, 0.12), rgba(115, 80, 193, 0.08));
-            border-radius: 16px;
-            border: 1px solid var(--huboo-mint);
-            animation: slideIn 0.4s ease;
-            box-shadow: 0 4px 20px rgba(73, 242, 177, 0.15);
+            border-radius: 16px; border: 1px solid var(--huboo-mint); animation: slideIn 0.4s ease;
         }
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
         .upload-zone.summary .file-info { 
             background: linear-gradient(135deg, rgba(115, 80, 193, 0.15), rgba(73, 242, 177, 0.08));
             border-color: var(--huboo-violet);
-            box-shadow: 0 4px 20px rgba(115, 80, 193, 0.15);
         }
         .file-info.show { display: block; }
         .file-info .check { color: var(--huboo-mint); margin-right: 10px; font-weight: bold; font-size: 1.1rem; }
         .file-info .name { font-weight: 700; color: var(--text-primary); }
         .file-info .rows { color: var(--text-secondary); font-size: 0.9rem; margin-top: 8px; }
 
-        /* ⏳ Loading Animado Dark */
         .loading { 
-            display: none; 
-            text-align: center; 
-            padding: 70px 24px;
-            background: var(--bg-card);
-            border-radius: 28px;
-            margin: 24px 0;
-            box-shadow: var(--shadow-lg), var(--shadow-violet);
+            display: none; text-align: center; padding: 70px 24px; background: var(--bg-card);
+            border-radius: 28px; margin: 24px 0; box-shadow: var(--shadow-lg), var(--shadow-violet);
             border: 1px solid var(--border-color);
         }
         .loading.show { display: block; animation: fadeIn 0.4s ease; }
-        
         .spinner {
-            width: 70px;
-            height: 70px;
-            border: 4px solid rgba(115, 80, 193, 0.25);
-            border-top-color: var(--huboo-mint);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 28px;
-            position: relative;
+            width: 70px; height: 70px; border: 4px solid rgba(115, 80, 193, 0.25);
+            border-top-color: var(--huboo-mint); border-radius: 50%; animation: spin 1s linear infinite;
+            margin: 0 auto 28px; position: relative;
         }
         .spinner::after {
-            content: '';
-            position: absolute;
-            top: 6px; left: 6px; right: 6px; bottom: 6px;
-            border: 3px solid transparent;
-            border-top-color: var(--huboo-violet);
-            border-radius: 50%;
+            content: ''; position: absolute; top: 6px; left: 6px; right: 6px; bottom: 6px;
+            border: 3px solid transparent; border-top-color: var(--huboo-violet); border-radius: 50%;
             animation: spin 1.5s linear infinite reverse;
         }
         @keyframes spin { to { transform: rotate(360deg); } }
 
-        /* 🎛️ Action Bar Dark */
-        .action-bar {
-            display: none;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 28px;
-            flex-wrap: wrap;
-            gap: 20px;
-            background: var(--bg-card);
-            padding: 20px 28px;
-            border-radius: 20px;
-            box-shadow: var(--shadow-md);
-            border: 1px solid var(--border-color);
-        }
-        .action-bar.show { display: flex; animation: slideDown 0.4s ease; }
-        @keyframes slideDown {
-            from { opacity: 0; transform: translateY(-15px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .action-bar h2 { 
-            font-size: 1.4rem; 
-            color: var(--huboo-violet-light);
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        .action-buttons { display: flex; gap: 14px; flex-wrap: wrap; }
-        
-        .btn-export {
-            padding: 14px 32px;
-            background: linear-gradient(135deg, var(--huboo-violet) 0%, #5a3a9e 100%);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            cursor: pointer;
-            font-size: 1rem;
-            font-weight: 700;
-            transition: all var(--transition-fast);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            box-shadow: 0 6px 20px rgba(115, 80, 193, 0.5);
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-export::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            transition: left 0.5s ease;
-        }
-        .btn-export:hover::before { left: 100%; }
-        .btn-export:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 12px 35px rgba(115, 80, 193, 0.7);
-        }
-        .btn-export:active { transform: translateY(-2px); }
-        .btn-export:disabled { 
-            opacity: 0.5; 
-            cursor: not-allowed; 
-            transform: none; 
-            box-shadow: none;
-        }
-
-        /* ⚠️ Risk Alerts - Dark Visual Impact */
         .risk-alerts {
-            display: none;
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 28px;
-            margin-bottom: 28px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-md);
+            display: none; background: var(--bg-card); border-radius: 24px; padding: 28px;
+            margin-bottom: 28px; border: 1px solid var(--border-color); box-shadow: var(--shadow-md);
             animation: fadeIn 0.5s ease;
         }
         .risk-alerts.show { display: block; }
         .risk-alerts h3 { 
-            font-size: 1.2rem; 
-            color: var(--danger); 
-            margin-bottom: 20px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px;
-            font-weight: 700;
-            text-shadow: 0 0 20px var(--danger-glow);
+            font-size: 1.2rem; color: var(--danger); margin-bottom: 20px; display: flex;
+            align-items: center; gap: 12px; font-weight: 700; text-shadow: 0 0 20px var(--danger-glow);
         }
-        .risk-grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 20px; 
-        }
+        .risk-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .risk-card { 
             background: linear-gradient(145deg, var(--bg-tertiary), var(--bg-secondary));
-            border-radius: 20px; 
-            padding: 24px; 
-            border-left: 5px solid var(--danger);
+            border-radius: 20px; padding: 24px; border-left: 5px solid var(--danger);
             transition: transform var(--transition-fast), box-shadow var(--transition-fast);
             border: 1px solid var(--border-color);
         }
-        .risk-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
-        }
+        .risk-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
         .risk-card.medium { border-left-color: var(--warning); }
         .risk-card.low { border-left-color: var(--info); }
-        .risk-card .risk-title { 
-            font-size: 0.95rem; 
-            color: var(--text-secondary); 
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
-        .risk-card .risk-value { 
-            font-size: 1.6rem; 
-            font-weight: 800; 
-            color: var(--text-primary);
-            letter-spacing: -0.5px;
-        }
-        .risk-card .risk-desc { 
-            font-size: 0.85rem; 
-            color: var(--text-muted); 
-            margin-top: 12px;
-            line-height: 1.5;
-        }
+        .risk-card .risk-title { font-size: 0.95rem; color: var(--text-secondary); margin-bottom: 10px; font-weight: 600; }
+        .risk-card .risk-value { font-size: 1.6rem; font-weight: 800; color: var(--text-primary); letter-spacing: -0.5px; }
+        .risk-card .risk-desc { font-size: 0.85rem; color: var(--text-muted); margin-top: 12px; line-height: 1.5; }
 
-        /* 📅 Date Filter Dark */
         .date-filter-section {
-            display: none;
-            background: var(--bg-card);
-            border-radius: 24px;
-            padding: 28px;
-            margin-bottom: 28px;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-md);
+            display: none; background: var(--bg-card); border-radius: 24px; padding: 28px;
+            margin-bottom: 28px; border: 1px solid var(--border-color); box-shadow: var(--shadow-md);
         }
         .date-filter-section.show { display: block; animation: fadeIn 0.4s ease; }
         .date-filter-section h3 { 
-            font-size: 1.2rem; 
-            color: var(--text-primary); 
-            margin-bottom: 22px; 
-            display: flex; 
-            align-items: center; 
-            gap: 12px;
-            font-weight: 700;
+            font-size: 1.2rem; color: var(--text-primary); margin-bottom: 22px;
+            display: flex; align-items: center; gap: 12px; font-weight: 700;
         }
-        .date-filter-row { 
-            display: flex; 
-            gap: 20px; 
-            flex-wrap: wrap; 
-            align-items: flex-end; 
-        }
-        .date-group { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            min-width: 190px; 
-        }
+        .date-filter-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end; }
+        .date-group { display: flex; flex-direction: column; gap: 10px; min-width: 190px; }
         .date-group label { 
-            font-size: 0.75rem; 
-            color: var(--text-secondary); 
-            text-transform: uppercase; 
-            letter-spacing: 1.2px; 
-            font-weight: 700;
+            font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;
+            letter-spacing: 1.2px; font-weight: 700;
         }
         .date-group input { 
-            padding: 16px 20px; 
-            background: var(--bg-tertiary); 
-            border: 2px solid var(--border-color); 
-            border-radius: 14px; 
-            color: var(--text-primary); 
-            font-size: 1rem; 
-            transition: all var(--transition-fast);
-            font-weight: 500;
+            padding: 16px 20px; background: var(--bg-tertiary); border: 2px solid var(--border-color);
+            border-radius: 14px; color: var(--text-primary); font-size: 1rem;
+            transition: all var(--transition-fast); font-weight: 500;
         }
         .date-group input:focus { 
-            outline: none; 
-            border-color: var(--huboo-violet); 
-            box-shadow: var(--border-glow);
+            outline: none; border-color: var(--huboo-violet); box-shadow: var(--border-glow);
             transform: translateY(-2px);
         }
 
-        /* 📊 Summary Section Dark */
         .summary-section {
-            display: none;
-            background: var(--bg-card);
-            border-radius: 28px;
-            padding: 36px;
-            margin-bottom: 28px;
-            border: 1px solid var(--border-color);
+            display: none; background: var(--bg-card); border-radius: 28px; padding: 36px;
+            margin-bottom: 28px; border: 1px solid var(--border-color);
             box-shadow: var(--shadow-lg), var(--shadow-violet);
         }
         .summary-section.show { display: block; animation: fadeIn 0.5s ease; }
         .summary-header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 32px; 
-            flex-wrap: wrap; 
-            gap: 20px; 
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 32px; flex-wrap: wrap; gap: 20px;
         }
-        .summary-header h2 { 
-            font-size: 1.5rem; 
-            color: var(--huboo-violet-light);
-            font-weight: 800;
-        }
+        .summary-header h2 { font-size: 1.5rem; color: var(--huboo-violet-light); font-weight: 800; }
         .summary-tabs { 
-            display: flex; 
-            gap: 10px; 
-            background: var(--bg-tertiary);
-            padding: 5px;
-            border-radius: 50px;
-            border: 1px solid var(--border-color);
+            display: flex; gap: 10px; background: var(--bg-tertiary); padding: 5px;
+            border-radius: 50px; border: 1px solid var(--border-color);
         }
         .summary-tab { 
-            padding: 12px 28px; 
-            background: transparent;
-            border: none;
-            border-radius: 50px;
-            color: var(--text-secondary); 
-            cursor: pointer; 
-            font-weight: 700; 
-            transition: all var(--transition-fast);
-            font-size: 0.95rem;
+            padding: 12px 28px; background: transparent; border: none; border-radius: 50px;
+            color: var(--text-secondary); cursor: pointer; font-weight: 700;
+            transition: all var(--transition-fast); font-size: 0.95rem;
         }
         .summary-tab:hover { color: var(--huboo-mint); background: var(--bg-hover); }
         .summary-tab.active { 
-            background: linear-gradient(135deg, var(--huboo-violet), #5a3a9e); 
-            color: white; 
-            box-shadow: var(--shadow-violet);
+            background: linear-gradient(135deg, var(--huboo-violet), #5a3a9e);
+            color: white; box-shadow: var(--shadow-violet);
         }
         
         .summary-table-container { 
-            overflow-x: auto; 
-            background: var(--bg-tertiary);
-            border-radius: 20px; 
-            padding: 4px;
-            border: 1px solid var(--border-color);
+            overflow-x: auto; background: var(--bg-tertiary); border-radius: 20px;
+            padding: 4px; border: 1px solid var(--border-color);
         }
-        .summary-table { 
-            width: 100%; 
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 0.95rem; 
+        .summary-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.95rem; }
+        .summary-table th, .summary-table td { 
+            padding: 18px 24px; text-align: right; border-bottom: 1px solid var(--border-color);
         }
-        .summary-table th, 
-        .summary-table td { 
-            padding: 18px 24px; 
-            text-align: right; 
-            border-bottom: 1px solid var(--border-color); 
-        }
-        .summary-table th:first-child, 
-        .summary-table td:first-child { 
-            text-align: left; 
-            position: sticky; 
-            left: 4px; 
-            background: var(--bg-tertiary);
-            z-index: 1;
-            border-left: none;
+        .summary-table th:first-child, .summary-table td:first-child { 
+            text-align: left; position: sticky; left: 4px; background: var(--bg-tertiary);
+            z-index: 1; border-left: none;
         }
         .summary-table th { 
-            background: var(--bg-secondary);
-            color: var(--text-secondary); 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            font-size: 0.75rem; 
-            letter-spacing: 1.2px;
+            background: var(--bg-secondary); color: var(--text-secondary); font-weight: 700;
+            text-transform: uppercase; font-size: 0.75rem; letter-spacing: 1.2px;
         }
         .summary-table th.bucket-header { 
-            background: linear-gradient(135deg, var(--huboo-violet), #5a3a9e); 
-            color: white; 
-            text-align: center;
-            font-size: 0.8rem;
-            font-weight: 700;
+            background: linear-gradient(135deg, var(--huboo-violet), #5a3a9e);
+            color: white; text-align: center; font-size: 0.8rem; font-weight: 700;
         }
-        .summary-table tr:hover td { 
-            background: var(--bg-hover);
-            transition: background var(--transition-fast);
-        }
+        .summary-table tr:hover td { background: var(--bg-hover); transition: background var(--transition-fast); }
         .summary-table tr.total-row { 
-            background: linear-gradient(135deg, rgba(115, 80, 193, 0.2), rgba(73, 242, 177, 0.15)); 
-            font-weight: 800;
-            border-top: 2px solid var(--border-color);
+            background: linear-gradient(135deg, rgba(115, 80, 193, 0.2), rgba(73, 242, 177, 0.15));
+            font-weight: 800; border-top: 2px solid var(--border-color);
         }
         .summary-table .money { 
-            font-family: 'SF Mono', 'Courier New', monospace; 
-            font-weight: 700; 
-            color: var(--text-primary);
-            font-size: 1.1rem;
+            font-family: 'SF Mono', 'Courier New', monospace; font-weight: 700;
+            color: var(--text-primary); font-size: 1.1rem;
         }
         .summary-table .money.positive { color: var(--huboo-mint); text-shadow: 0 0 15px var(--success-glow); }
         .summary-table .money.negative { color: var(--danger); text-shadow: 0 0 15px var(--danger-glow); }
-        .summary-table .pct { 
-            color: var(--huboo-violet-light);
-            font-weight: 600;
-        }
+        .summary-table .pct { color: var(--huboo-violet-light); font-weight: 600; }
 
-        /* 🪣 Bucket Totals Cards Dark */
-        .bucket-totals { 
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 24px; 
-            margin-top: 32px; 
-        }
-        @media (max-width: 900px) { 
-            .bucket-totals { grid-template-columns: 1fr; } 
-        }
+        .bucket-totals { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 32px; }
+        @media (max-width: 900px) { .bucket-totals { grid-template-columns: 1fr; } }
         .bucket-card { 
-            background: var(--bg-card); 
-            border-radius: 24px; 
-            padding: 32px; 
-            border-left: 6px solid;
-            transition: all var(--transition-normal);
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card); border-radius: 24px; padding: 32px; border-left: 6px solid;
+            transition: all var(--transition-normal); position: relative; overflow: hidden;
             border: 1px solid var(--border-color);
         }
         .bucket-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0;
-            height: 3px;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, transparent, currentColor, transparent);
-            opacity: 0;
-            transition: opacity var(--transition-normal);
+            opacity: 0; transition: opacity var(--transition-normal);
         }
-        .bucket-card:hover { 
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
-        }
+        .bucket-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
         .bucket-card:hover::before { opacity: 1; }
-        .bucket-card.short { 
-            border-left-color: var(--huboo-mint); 
-        }
+        .bucket-card.short { border-left-color: var(--huboo-mint); }
         .bucket-card.short h3 { color: var(--huboo-mint); }
-        .bucket-card.medium { 
-            border-left-color: var(--warning); 
-        }
+        .bucket-card.medium { border-left-color: var(--warning); }
         .bucket-card.medium h3 { color: var(--warning); }
-        .bucket-card.long { 
-            border-left-color: var(--huboo-violet); 
-        }
+        .bucket-card.long { border-left-color: var(--huboo-violet); }
         .bucket-card.long h3 { color: var(--huboo-violet-light); }
-        
         .bucket-card h3 { 
-            font-size: 0.9rem; 
-            margin-bottom: 18px; 
-            text-transform: uppercase; 
-            letter-spacing: 1.8px;
-            font-weight: 700;
+            font-size: 0.9rem; margin-bottom: 18px; text-transform: uppercase;
+            letter-spacing: 1.8px; font-weight: 700;
         }
         .bucket-card .bucket-total { 
-            font-size: 2.8rem; 
-            font-weight: 900; 
-            margin-bottom: 10px; 
-            color: var(--text-primary);
-            letter-spacing: -1px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-size: 2.8rem; font-weight: 900; margin-bottom: 10px;
+            color: var(--text-primary); letter-spacing: -1px; text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
-        .bucket-card .bucket-weighted { 
-            font-size: 1.15rem; 
-            color: var(--text-secondary);
-        }
+        .bucket-card .bucket-weighted { font-size: 1.15rem; color: var(--text-secondary); }
         .bucket-card .bucket-weighted span { 
-            color: var(--huboo-mint); 
-            font-weight: 800; 
-            text-shadow: 0 0 10px var(--success-glow);
+            color: var(--huboo-mint); font-weight: 800; text-shadow: 0 0 10px var(--success-glow);
         }
 
-        /* 📈 KPI Cards - Dark Glass Effect */
         .kpi-row { 
-            display: none; 
-            grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); 
-            gap: 24px; 
-            margin-bottom: 28px; 
+            display: none; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+            gap: 24px; margin-bottom: 28px;
         }
         .kpi-row.show { display: grid; animation: fadeIn 0.6s ease; }
         .kpi-card { 
-            background: var(--bg-card); 
-            border-radius: 24px; 
-            padding: 28px; 
-            border: 1px solid var(--border-color); 
-            transition: all var(--transition-normal); 
-            position: relative;
-            overflow: hidden;
+            background: var(--bg-card); border-radius: 24px; padding: 28px;
+            border: 1px solid var(--border-color); transition: all var(--transition-normal);
+            position: relative; overflow: hidden;
         }
         .kpi-card::after {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
             background: radial-gradient(circle, rgba(115,80,193,0.15) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity var(--transition-normal);
-            pointer-events: none;
+            opacity: 0; transition: opacity var(--transition-normal); pointer-events: none;
         }
         .kpi-card:hover { 
-            transform: translateY(-8px); 
-            border-color: var(--huboo-violet); 
+            transform: translateY(-8px); border-color: var(--huboo-violet);
             box-shadow: var(--shadow-lg), var(--shadow-violet);
         }
         .kpi-card:hover::after { opacity: 1; }
         .kpi-card .label { 
-            font-size: 0.75rem; 
-            color: var(--text-secondary); 
-            margin-bottom: 14px; 
-            text-transform: uppercase; 
-            letter-spacing: 1.8px; 
-            font-weight: 800;
+            font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 14px;
+            text-transform: uppercase; letter-spacing: 1.8px; font-weight: 800;
         }
         .kpi-card .value { 
-            font-size: 2.4rem; 
-            font-weight: 900; 
-            letter-spacing: -1px;
-            transition: transform var(--transition-fast);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-size: 2.4rem; font-weight: 900; letter-spacing: -1px;
+            transition: transform var(--transition-fast); text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         .kpi-card:hover .value { transform: scale(1.06); }
         .value.violet { color: var(--huboo-violet-light); text-shadow: 0 0 20px rgba(115, 80, 193, 0.4); }
@@ -837,437 +383,180 @@
         .value.danger { color: var(--danger); text-shadow: 0 0 20px var(--danger-glow); }
         .value.info { color: var(--info); text-shadow: 0 0 20px var(--info-glow); }
         .kpi-card .formula { 
-            font-size: 0.75rem; 
-            color: var(--text-muted); 
-            margin-top: 14px; 
-            padding-top: 14px; 
-            border-top: 1px solid var(--border-color); 
-            font-family: 'SF Mono', monospace;
+            font-size: 0.75rem; color: var(--text-muted); margin-top: 14px;
+            padding-top: 14px; border-top: 1px solid var(--border-color); font-family: 'SF Mono', monospace;
         }
 
-        /* 📊 Stage Breakdown Mini Dark */
-        .stage-breakdown-mini { 
-            display: none; 
-            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); 
-            gap: 20px; 
-            margin-bottom: 28px; 
+        .stage-breakdown-mini, .industry-breakdown-mini { 
+            display: none; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 20px; margin-bottom: 28px;
         }
-        .stage-breakdown-mini.show { display: grid; animation: fadeIn 0.5s ease; }
-        .stage-mini-card { 
-            background: var(--bg-card); 
-            border-radius: 20px; 
-            padding: 24px; 
-            border: 1px solid var(--border-color); 
-            text-align: center;
-            transition: all var(--transition-fast);
+        .stage-breakdown-mini.show, .industry-breakdown-mini.show { display: grid; animation: fadeIn 0.5s ease; }
+        .stage-mini-card, .industry-mini-card { 
+            background: var(--bg-card); border-radius: 20px; padding: 24px;
+            border: 1px solid var(--border-color); text-align: center; transition: all var(--transition-fast);
         }
-        .stage-mini-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--huboo-violet);
+        .stage-mini-card:hover, .industry-mini-card:hover {
+            transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--huboo-violet);
         }
-        .stage-mini-card .stage-name { 
-            font-size: 0.85rem; 
-            color: var(--text-secondary); 
-            margin-bottom: 12px;
-            font-weight: 600;
+        .stage-mini-card .stage-name, .industry-mini-card .industry-name { 
+            font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 12px; font-weight: 600;
         }
-        .stage-mini-card .stage-value { 
-            font-size: 1.8rem; 
-            font-weight: 800; 
-            color: var(--text-primary);
+        .stage-mini-card .stage-value, .industry-mini-card .industry-value { 
+            font-size: 1.8rem; font-weight: 800; color: var(--text-primary);
         }
-        .stage-mini-card .stage-count { 
-            font-size: 0.8rem; 
-            color: var(--text-muted); 
-            margin-top: 8px; 
+        .stage-mini-card .stage-count, .industry-mini-card .industry-count { 
+            font-size: 0.8rem; color: var(--text-muted); margin-top: 8px;
         }
 
-        /* 🔍 Filters Section Dark */
         .filters-section { 
-            display: none; 
-            background: var(--bg-card); 
-            border-radius: 24px; 
-            padding: 28px; 
-            margin-bottom: 28px; 
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-md);
+            display: none; background: var(--bg-card); border-radius: 24px; padding: 28px;
+            margin-bottom: 28px; border: 1px solid var(--border-color); box-shadow: var(--shadow-md);
         }
         .filters-section.show { display: block; animation: fadeIn 0.4s ease; }
-        .filters-row { 
-            display: flex; 
-            gap: 20px; 
-            flex-wrap: wrap; 
-            align-items: flex-end; 
-        }
-        .filter-group { 
-            display: flex; 
-            flex-direction: column; 
-            gap: 10px; 
-            min-width: 160px; 
-        }
+        .filters-row { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-end; }
+        .filter-group { display: flex; flex-direction: column; gap: 10px; min-width: 160px; }
         .filter-group label { 
-            font-size: 0.75rem; 
-            color: var(--text-secondary); 
-            text-transform: uppercase; 
-            letter-spacing: 1.2px; 
-            font-weight: 700;
+            font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;
+            letter-spacing: 1.2px; font-weight: 700;
         }
-        .filter-select, 
-        .search-input { 
-            padding: 16px 20px; 
-            background: var(--bg-tertiary); 
-            border: 2px solid var(--border-color); 
-            border-radius: 14px; 
-            color: var(--text-primary); 
-            font-size: 1rem; 
-            transition: all var(--transition-fast); 
-            font-weight: 500;
+        .filter-select, .search-input { 
+            padding: 16px 20px; background: var(--bg-tertiary); border: 2px solid var(--border-color);
+            border-radius: 14px; color: var(--text-primary); font-size: 1rem;
+            transition: all var(--transition-fast); font-weight: 500;
         }
-        .filter-select:focus, 
-        .search-input:focus { 
-            outline: none; 
-            border-color: var(--huboo-violet); 
-            box-shadow: var(--border-glow);
+        .filter-select:focus, .search-input:focus { 
+            outline: none; border-color: var(--huboo-violet); box-shadow: var(--border-glow);
             transform: translateY(-2px);
         }
-        .search-input { 
-            min-width: 240px; 
-            flex: 1; 
-        }
-        
+        .search-input { min-width: 240px; flex: 1; }
         .btn-apply { 
-            padding: 16px 36px; 
-            background: linear-gradient(135deg, var(--huboo-mint) 0%, #2dd4bf 100%); 
-            border: none; 
-            border-radius: 50px; 
-            color: var(--huboo-charcoal); 
-            cursor: pointer; 
-            font-size: 1rem; 
-            font-weight: 700; 
-            transition: all var(--transition-fast);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            padding: 16px 36px; background: linear-gradient(135deg, var(--huboo-mint) 0%, #2dd4bf 100%);
+            border: none; border-radius: 50px; color: var(--huboo-charcoal); cursor: pointer;
+            font-size: 1rem; font-weight: 700; transition: all var(--transition-fast);
+            display: flex; align-items: center; gap: 10px;
             box-shadow: 0 6px 20px rgba(73, 242, 177, 0.5);
         }
-        .btn-apply:hover { 
-            transform: translateY(-4px); 
-            box-shadow: 0 12px 35px rgba(73, 242, 177, 0.7);
-        }
+        .btn-apply:hover { transform: translateY(-4px); box-shadow: 0 12px 35px rgba(73, 242, 177, 0.7); }
         .btn-clear { 
-            padding: 16px 36px; 
-            background: var(--bg-tertiary); 
-            border: 2px solid var(--border-color); 
-            border-radius: 50px; 
-            color: var(--text-secondary); 
-            cursor: pointer; 
-            font-size: 1rem; 
-            font-weight: 700; 
-            transition: all var(--transition-fast);
+            padding: 16px 36px; background: var(--bg-tertiary); border: 2px solid var(--border-color);
+            border-radius: 50px; color: var(--text-secondary); cursor: pointer;
+            font-size: 1rem; font-weight: 700; transition: all var(--transition-fast);
         }
         .btn-clear:hover { 
-            background: var(--bg-hover); 
-            color: var(--huboo-violet-light);
-            border-color: var(--huboo-violet);
-            transform: translateY(-3px);
+            background: var(--bg-hover); color: var(--huboo-violet-light);
+            border-color: var(--huboo-violet); transform: translateY(-3px);
         }
 
-        /* 📈 Charts Grid Dark */
         .charts-grid { 
-            display: none; 
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 28px; 
-            margin-bottom: 28px; 
+            display: none; grid-template-columns: repeat(2, 1fr); gap: 28px; margin-bottom: 28px;
         }
         .charts-grid.show { display: grid; animation: fadeIn 0.6s ease; }
-        @media (max-width: 1000px) { 
-            .charts-grid { grid-template-columns: 1fr; } 
-        }
+        @media (max-width: 1000px) { .charts-grid { grid-template-columns: 1fr; } }
         .chart-container { 
-            background: var(--bg-card); 
-            border-radius: 24px; 
-            padding: 32px; 
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-md);
+            background: var(--bg-card); border-radius: 24px; padding: 32px;
+            border: 1px solid var(--border-color); box-shadow: var(--shadow-md);
             transition: transform var(--transition-normal), box-shadow var(--transition-normal);
         }
-        .chart-container:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-lg), var(--shadow-violet);
-        }
+        .chart-container:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg), var(--shadow-violet); }
         .chart-container h3 { 
-            font-size: 1.2rem; 
-            color: var(--text-primary); 
-            margin-bottom: 24px; 
-            padding-bottom: 18px; 
-            border-bottom: 1px solid var(--border-color); 
-            display: flex; 
-            align-items: center; 
-            gap: 12px; 
-            font-weight: 700;
+            font-size: 1.2rem; color: var(--text-primary); margin-bottom: 24px;
+            padding-bottom: 18px; border-bottom: 1px solid var(--border-color);
+            display: flex; align-items: center; gap: 12px; font-weight: 700;
         }
-        .chart-container canvas { 
-            max-height: 340px; 
-        }
+        .chart-container canvas { max-height: 340px; }
 
-        /* 📋 Table Container Dark */
         .table-container { 
-            display: none; 
-            background: var(--bg-card); 
-            border-radius: 24px; 
-            padding: 32px; 
-            border: 1px solid var(--border-color); 
-            overflow-x: auto;
-            box-shadow: var(--shadow-md);
+            display: none; background: var(--bg-card); border-radius: 24px; padding: 32px;
+            border: 1px solid var(--border-color); overflow-x: auto; box-shadow: var(--shadow-md);
         }
         .table-container.show { display: block; animation: fadeIn 0.5s ease; }
-        .table-container h3 { 
-            font-size: 1.2rem; 
-            color: var(--text-primary); 
-            margin-bottom: 24px; 
-            font-weight: 700;
-        }
-        table { 
-            width: 100%; 
-            border-collapse: separate;
-            border-spacing: 0;
-            font-size: 0.95rem; 
-        }
+        .table-container h3 { font-size: 1.2rem; color: var(--text-primary); margin-bottom: 24px; font-weight: 700; }
+        table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.95rem; }
         th { 
-            background: var(--bg-tertiary); 
-            padding: 18px 24px; 
-            text-align: left; 
-            color: var(--text-secondary); 
-            font-weight: 700; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-            cursor: pointer; 
-            user-select: none; 
-            white-space: nowrap; 
-            border-bottom: 2px solid var(--border-color); 
-            font-size: 0.8rem;
+            background: var(--bg-tertiary); padding: 18px 24px; text-align: left;
+            color: var(--text-secondary); font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; cursor: pointer; user-select: none; white-space: nowrap;
+            border-bottom: 2px solid var(--border-color); font-size: 0.8rem;
             transition: all var(--transition-fast);
         }
-        th:hover { 
-            color: var(--huboo-violet-light); 
-            background: var(--bg-hover);
-        }
+        th:hover { color: var(--huboo-violet-light); background: var(--bg-hover); }
         th.sorted-asc::after { content: " ▲"; color: var(--huboo-mint); }
         th.sorted-desc::after { content: " ▼"; color: var(--huboo-mint); }
-        td { 
-            padding: 18px 24px; 
-            border-bottom: 1px solid var(--border-color); 
-            vertical-align: middle;
-            transition: background var(--transition-fast);
-        }
-        tr:hover td { 
-            background: var(--bg-hover);
-        }
+        td { padding: 18px 24px; border-bottom: 1px solid var(--border-color); vertical-align: middle; transition: background var(--transition-fast); }
+        tr:hover td { background: var(--bg-hover); }
         
-        /* 🏷️ Badges Dark Mejorados */
         .badge { 
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 7px 16px; 
-            border-radius: 50px; 
-            font-size: 0.8rem; 
-            font-weight: 700; 
-            white-space: nowrap;
-            transition: transform var(--transition-fast);
-            border: 1px solid transparent;
+            display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px;
+            border-radius: 50px; font-size: 0.8rem; font-weight: 700; white-space: nowrap;
+            transition: transform var(--transition-fast); border: 1px solid transparent;
         }
         .badge:hover { transform: scale(1.06); }
-        .badge-koa { 
-            background: rgba(73, 242, 177, 0.2); 
-            color: var(--huboo-mint);
-            border-color: rgba(73, 242, 177, 0.4);
-        }
-        .badge-onboarding { 
-            background: rgba(96, 165, 250, 0.2); 
-            color: var(--info);
-            border-color: rgba(96, 165, 250, 0.4);
-        }
-        .badge-presenting { 
-            background: rgba(245, 158, 11, 0.2); 
-            color: var(--warning);
-            border-color: rgba(245, 158, 11, 0.4);
-        }
-        .badge-quoting { 
-            background: rgba(115, 80, 193, 0.2); 
-            color: var(--huboo-violet-light);
-            border-color: rgba(115, 80, 193, 0.4);
-        }
-        .badge-bucket { 
-            background: var(--bg-tertiary); 
-            color: var(--text-primary);
-            border-color: var(--border-color);
-        }
-        .badge-territory { 
-            background: rgba(115, 80, 193, 0.2); 
-            color: var(--huboo-violet-light);
-            border-color: rgba(115, 80, 193, 0.4);
-        }
-        .badge-identified { 
-            background: rgba(122, 107, 153, 0.2); 
-            color: var(--text-muted);
-            border-color: rgba(122, 107, 153, 0.4);
-        }
+        .badge-koa { background: rgba(73, 242, 177, 0.2); color: var(--huboo-mint); border-color: rgba(73, 242, 177, 0.4); }
+        .badge-onboarding { background: rgba(96, 165, 250, 0.2); color: var(--info); border-color: rgba(96, 165, 250, 0.4); }
+        .badge-presenting { background: rgba(245, 158, 11, 0.2); color: var(--warning); border-color: rgba(245, 158, 11, 0.4); }
+        .badge-quoting { background: rgba(115, 80, 193, 0.2); color: var(--huboo-violet-light); border-color: rgba(115, 80, 193, 0.4); }
+        .badge-bucket { background: var(--bg-tertiary); color: var(--text-primary); border-color: var(--border-color); }
+        .badge-territory { background: rgba(115, 80, 193, 0.2); color: var(--huboo-violet-light); border-color: rgba(115, 80, 193, 0.4); }
+        .badge-identified { background: rgba(122, 107, 153, 0.2); color: var(--text-muted); border-color: rgba(122, 107, 153, 0.4); }
+        .badge-industry { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border-color: rgba(139, 92, 246, 0.4); }
 
-        /* 📊 Probability Bar Dark */
-        .prob-cell { 
-            display: flex; 
-            align-items: center; 
-            gap: 14px; 
-        }
+        .prob-cell { display: flex; align-items: center; gap: 14px; }
         .prob-bar { 
-            width: 100px; 
-            height: 12px; 
-            background: var(--bg-tertiary); 
-            border-radius: 12px; 
-            overflow: hidden;
-            position: relative;
-            border: 1px solid var(--border-color);
+            width: 100px; height: 12px; background: var(--bg-tertiary); border-radius: 12px;
+            overflow: hidden; position: relative; border: 1px solid var(--border-color);
         }
         .prob-fill { 
-            height: 100%; 
-            border-radius: 12px; 
-            transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+            height: 100%; border-radius: 12px; transition: width 0.7s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
         .prob-fill::after {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
             background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
             animation: shimmer 2.5s infinite;
         }
-        @keyframes shimmer {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-        .prob-high { 
-            background: linear-gradient(90deg, var(--huboo-mint), #22c55e); 
-            box-shadow: 0 0 15px var(--success-glow);
-        }
-        .prob-med { 
-            background: linear-gradient(90deg, var(--warning), #d97706); 
-            box-shadow: 0 0 15px var(--warning-glow);
-        }
-        .prob-low { 
-            background: linear-gradient(90deg, var(--danger), #dc2626); 
-            box-shadow: 0 0 15px var(--danger-glow);
-        }
+        @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
+        .prob-high { background: linear-gradient(90deg, var(--huboo-mint), #22c55e); box-shadow: 0 0 15px var(--success-glow); }
+        .prob-med { background: linear-gradient(90deg, var(--warning), #d97706); box-shadow: 0 0 15px var(--warning-glow); }
+        .prob-low { background: linear-gradient(90deg, var(--danger), #dc2626); box-shadow: 0 0 15px var(--danger-glow); }
 
-        /* 💰 Money Values Dark con colores condicionales */
-        .money { 
-            font-family: 'SF Mono', 'Courier New', monospace; 
-            font-weight: 700;
-            transition: color var(--transition-fast);
-        }
-        .money.positive { 
-            color: var(--huboo-mint);
-            text-shadow: 0 0 12px var(--success-glow);
-        }
-        .money.neutral { 
-            color: var(--text-primary);
-        }
-        .money.negative { 
-            color: var(--danger);
-            text-shadow: 0 0 12px var(--danger-glow);
-        }
+        .money { font-family: 'SF Mono', 'Courier New', monospace; font-weight: 700; transition: color var(--transition-fast); }
+        .money.positive { color: var(--huboo-mint); text-shadow: 0 0 12px var(--success-glow); }
+        .money.neutral { color: var(--text-primary); }
+        .money.negative { color: var(--danger); text-shadow: 0 0 12px var(--danger-glow); }
 
-        /* 📄 Pagination Dark */
-        .pagination { 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            gap: 20px; 
-            margin-top: 32px; 
-        }
+        .pagination { display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 32px; }
         .pagination button { 
-            padding: 14px 28px; 
-            background: var(--bg-tertiary); 
-            border: 2px solid var(--border-color); 
-            border-radius: 50px; 
-            color: var(--text-primary); 
-            cursor: pointer; 
-            font-weight: 700; 
-            transition: all var(--transition-fast);
-            font-size: 0.95rem;
+            padding: 14px 28px; background: var(--bg-tertiary); border: 2px solid var(--border-color);
+            border-radius: 50px; color: var(--text-primary); cursor: pointer; font-weight: 700;
+            transition: all var(--transition-fast); font-size: 0.95rem;
         }
         .pagination button:hover:not(:disabled) { 
-            background: var(--bg-hover); 
-            border-color: var(--huboo-violet); 
-            transform: translateY(-3px);
-            color: var(--huboo-violet-light);
+            background: var(--bg-hover); border-color: var(--huboo-violet);
+            transform: translateY(-3px); color: var(--huboo-violet-light);
         }
         .pagination button:active:not(:disabled) { transform: translateY(-1px); }
-        .pagination button:disabled { 
-            opacity: 0.4; 
-            cursor: not-allowed;
-            transform: none;
-        }
-        .page-info { 
-            color: var(--text-secondary); 
-            font-size: 0.95rem; 
-            font-weight: 600;
-        }
+        .pagination button:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .page-info { color: var(--text-secondary); font-size: 0.95rem; font-weight: 600; }
 
-        /* 🔔 Alerts Dark Mejoradas */
         .alert { 
-            padding: 18px 28px; 
-            border-radius: 20px; 
-            margin-bottom: 24px; 
-            display: none; 
-            font-weight: 600;
-            animation: slideInAlert 0.5s ease;
-            border-left: 5px solid;
+            padding: 18px 28px; border-radius: 20px; margin-bottom: 24px; display: none;
+            font-weight: 600; animation: slideInAlert 0.5s ease; border-left: 5px solid;
             border: 1px solid var(--border-color);
         }
-        @keyframes slideInAlert {
-            from { opacity: 0; transform: translateX(-25px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes slideInAlert { from { opacity: 0; transform: translateX(-25px); } to { opacity: 1; transform: translateX(0); } }
         .alert.show { display: block; }
-        .alert-success { 
-            background: rgba(73, 242, 177, 0.12); 
-            border-left-color: var(--huboo-mint); 
-            color: var(--text-primary);
-            box-shadow: 0 4px 20px rgba(73, 242, 177, 0.15);
-        }
-        .alert-error { 
-            background: rgba(239, 68, 68, 0.12); 
-            border-left-color: var(--danger); 
-            color: var(--text-primary);
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.15);
-        }
-        .alert-info { 
-            background: rgba(96, 165, 250, 0.12); 
-            border-left-color: var(--info); 
-            color: var(--text-primary);
-            box-shadow: 0 4px 20px rgba(96, 165, 250, 0.15);
-        }
-        .alert-warning { 
-            background: rgba(245, 158, 11, 0.12); 
-            border-left-color: var(--warning); 
-            color: var(--text-primary);
-            box-shadow: 0 4px 20px rgba(245, 158, 11, 0.15);
-        }
+        .alert-success { background: rgba(73, 242, 177, 0.12); border-left-color: var(--huboo-mint); color: var(--text-primary); }
+        .alert-error { background: rgba(239, 68, 68, 0.12); border-left-color: var(--danger); color: var(--text-primary); }
+        .alert-info { background: rgba(96, 165, 250, 0.12); border-left-color: var(--info); color: var(--text-primary); }
+        .alert-warning { background: rgba(245, 158, 11, 0.12); border-left-color: var(--warning); color: var(--text-primary); }
 
-        /* 🦶 Footer Dark */
         footer { 
-            text-align: center; 
-            margin-top: 48px; 
-            padding-top: 32px; 
-            border-top: 1px solid var(--border-color); 
-            color: var(--text-secondary);
-            font-size: 0.95rem;
+            text-align: center; margin-top: 48px; padding-top: 32px;
+            border-top: 1px solid var(--border-color); color: var(--text-secondary); font-size: 0.95rem;
         }
         footer strong { color: var(--huboo-mint); }
 
-        /* 📱 Responsive Dark Mejorado */
         @media (max-width: 768px) {
             body { padding: 16px; }
             header { padding: 24px; border-radius: 20px; }
@@ -1278,66 +567,34 @@
             .summary-section { padding: 28px 24px; }
             .chart-container { padding: 24px; }
         }
-
         @media (max-width: 480px) {
             .filters-row { flex-direction: column; align-items: stretch; }
             .filter-group { min-width: 100%; }
             .btn-apply, .btn-clear { width: 100%; justify-content: center; }
             header { flex-direction: column; text-align: center; }
             .header-brand { margin-bottom: 16px; }
-            .action-buttons { width: 100%; justify-content: center; }
             .bucket-totals { gap: 16px; }
             .bucket-card { padding: 24px; }
         }
 
-        /* 🖨️ Print Styles Dark */
         @media print {
-            body { 
-                background: white; 
-                color: black;
-                padding: 0;
-            }
-            .upload-container, 
-            .filters-section, 
-            .action-buttons, 
-            .pagination, 
-            footer { 
-                display: none !important; 
-            }
+            body { background: white; color: black; padding: 0; }
+            .upload-container, .filters-section, .pagination, footer { display: none !important; }
             .dashboard { max-width: 100%; }
-            .kpi-card, 
-            .chart-container, 
-            .table-container, 
-            .summary-section { 
-                background: white !important; 
-                color: black !important; 
-                border: 1px solid #ccc !important;
-                box-shadow: none !important;
+            .kpi-card, .chart-container, .table-container, .summary-section { 
+                background: white !important; color: black !important; border: 1px solid #ccc !important; box-shadow: none !important;
             }
-            header { 
-                background: white !important; 
-                position: static;
-                box-shadow: none !important;
-            }
+            header { background: white !important; position: static; box-shadow: none !important; }
         }
 
-        /* ✨ Micro-interacciones Dark */
         @media (prefers-reduced-motion: no-preference) {
-            .kpi-card,
-            .bucket-card,
-            .chart-container,
-            .upload-zone {
-                will-change: transform;
-            }
+            .kpi-card, .bucket-card, .chart-container, .upload-zone { will-change: transform; }
         }
 
-        /* 🎨 Utilidades de color condicional Dark */
         .text-positive { color: var(--huboo-mint) !important; }
         .text-negative { color: var(--danger) !important; }
         .bg-positive { background: rgba(73, 242, 177, 0.12) !important; }
         .bg-negative { background: rgba(239, 68, 68, 0.12) !important; }
-        .border-positive { border-color: var(--huboo-mint) !important; }
-        .border-negative { border-color: var(--danger) !important; }
     </style>
 </head>
 <body>
@@ -1377,7 +634,6 @@
                     <div class="rows" id="dataRows"></div>
                 </div>
             </div>
-
             <div class="upload-zone summary" id="summaryZone">
                 <div class="upload-icon">📈</div>
                 <h3>Executive Summary</h3>
@@ -1410,28 +666,10 @@
         <div class="date-filter-section" id="dateFilterSection">
             <h3>📅 Filter by Go Live Date</h3>
             <div class="date-filter-row">
-                <div class="date-group">
-                    <label>Start Date</label>
-                    <input type="date" id="dateStart" />
-                </div>
-                <div class="date-group">
-                    <label>End Date</label>
-                    <input type="date" id="dateEnd" />
-                </div>
-                <button class="btn-apply" onclick="applyDateFilter()">
-                    <span>🔍</span> Apply Filter
-                </button>
+                <div class="date-group"><label>Start Date</label><input type="date" id="dateStart" /></div>
+                <div class="date-group"><label>End Date</label><input type="date" id="dateEnd" /></div>
+                <button class="btn-apply" onclick="applyDateFilter()"><span>🔍</span> Apply Filter</button>
                 <button class="btn-clear" onclick="clearDateFilter()">Clear</button>
-            </div>
-        </div>
-
-        <!-- Action Bar -->
-        <div class="action-bar" id="actionBar">
-            <h2>📈 Pipeline Overview</h2>
-            <div class="action-buttons">
-                <button class="btn-export" id="btnExportPDF" onclick="exportToPDF()">
-                    <span>📥</span> Export to PDF
-                </button>
             </div>
         </div>
 
@@ -1444,7 +682,6 @@
                     <button class="summary-tab" onclick="switchSummaryTab('arr')">ARR</button>
                 </div>
             </div>
-            
             <div class="summary-table-container">
                 <table class="summary-table" id="summaryTable">
                     <thead>
@@ -1455,87 +692,49 @@
                             <th colspan="3" class="bucket-header">🟣 Long Term (9M+)</th>
                         </tr>
                         <tr>
-                            <th>Revenue</th>
-                            <th>Prob AVG</th>
-                            <th>Weighted</th>
-                            <th>Revenue</th>
-                            <th>Prob AVG</th>
-                            <th>Weighted</th>
-                            <th>Revenue</th>
-                            <th>Prob AVG</th>
-                            <th>Weighted</th>
+                            <th>Revenue</th><th>Prob AVG</th><th>Weighted</th>
+                            <th>Revenue</th><th>Prob AVG</th><th>Weighted</th>
+                            <th>Revenue</th><th>Prob AVG</th><th>Weighted</th>
                         </tr>
                     </thead>
                     <tbody id="summaryTableBody"></tbody>
                 </table>
             </div>
-
             <div class="bucket-totals" id="bucketTotals">
-                <div class="bucket-card short">
-                    <h3>🟢 Short Term</h3>
-                    <div class="bucket-total" id="bucketShortTotal">£0</div>
-                    <div class="bucket-weighted">Weighted: <span id="bucketShortWeighted">£0</span></div>
-                </div>
-                <div class="bucket-card medium">
-                    <h3>🟡 Medium Term</h3>
-                    <div class="bucket-total" id="bucketMediumTotal">£0</div>
-                    <div class="bucket-weighted">Weighted: <span id="bucketMediumWeighted">£0</span></div>
-                </div>
-                <div class="bucket-card long">
-                    <h3>🟣 Long Term</h3>
-                    <div class="bucket-total" id="bucketLongTotal">£0</div>
-                    <div class="bucket-weighted">Weighted: <span id="bucketLongWeighted">£0</span></div>
-                </div>
+                <div class="bucket-card short"><h3>🟢 Short Term</h3><div class="bucket-total" id="bucketShortTotal">£0</div><div class="bucket-weighted">Weighted: <span id="bucketShortWeighted">£0</span></div></div>
+                <div class="bucket-card medium"><h3>🟡 Medium Term</h3><div class="bucket-total" id="bucketMediumTotal">£0</div><div class="bucket-weighted">Weighted: <span id="bucketMediumWeighted">£0</span></div></div>
+                <div class="bucket-card long"><h3>🟣 Long Term</h3><div class="bucket-total" id="bucketLongTotal">£0</div><div class="bucket-weighted">Weighted: <span id="bucketLongWeighted">£0</span></div></div>
             </div>
         </div>
 
-        <!-- Stage Breakdown Mini -->
+        <!-- Stage & Industry Breakdown Mini -->
         <div class="stage-breakdown-mini" id="stageBreakdownMini"></div>
+        <div class="industry-breakdown-mini" id="industryBreakdownMini"></div>
 
         <!-- KPIs -->
         <div class="kpi-row" id="kpiRow">
-            <div class="kpi-card">
-                <div class="label">📦 Total Pipeline</div>
-                <div class="value violet" id="kpiTotal">£0</div>
-                <div class="formula">SUM(ARR)</div>
-            </div>
-            <div class="kpi-card">
-                <div class="label">💎 Weighted Value</div>
-                <div class="value mint" id="kpiWeighted">£0</div>
-                <div class="formula">SUM(ARR × Prob%)</div>
-            </div>
-            <div class="kpi-card">
-                <div class="label">🎯 Opportunities</div>
-                <div class="value warning" id="kpiCount">0</div>
-                <div class="formula">COUNT(Rows)</div>
-            </div>
-            <div class="kpi-card">
-                <div class="label">📊 Avg Probability</div>
-                <div class="value info" id="kpiProb">0%</div>
-                <div class="formula">AVG(Prob%)</div>
-            </div>
+            <div class="kpi-card"><div class="label">📦 Total Pipeline</div><div class="value violet" id="kpiTotal">£0</div><div class="formula">SUM(ARR)</div></div>
+            <div class="kpi-card"><div class="label">💎 Weighted Value</div><div class="value mint" id="kpiWeighted">£0</div><div class="formula">SUM(ARR × Prob%)</div></div>
+            <div class="kpi-card"><div class="label">🎯 Opportunities</div><div class="value warning" id="kpiCount">0</div><div class="formula">COUNT(Rows)</div></div>
+            <div class="kpi-card"><div class="label">📊 Avg Probability</div><div class="value info" id="kpiProb">0%</div><div class="formula">AVG(Prob%)</div></div>
         </div>
 
         <!-- Filters -->
         <div class="filters-section" id="filtersSection">
             <div class="filters-row">
-                <div class="filter-group">
-                    <label>👤 Owner</label>
-                    <select class="filter-select" id="ownerFilter"><option value="">All Owners</option></select>
-                </div>
-                <div class="filter-group">
-                    <label>📍 Stage</label>
+                <div class="filter-group"><label>👤 Owner</label><select class="filter-select" id="ownerFilter"><option value="">All Owners</option></select></div>
+                <div class="filter-group"><label>📍 Stage</label>
                     <select class="filter-select" id="stageFilter">
                         <option value="">All Stages</option>
                         <option value="Opportunity Identified">Opportunity Identified</option>
                         <option value="Quoting">Quoting</option>
                         <option value="Presenting/Negotiating">Presenting/Negotiating</option>
-                        <option value="Onboarding">Onboarding</option>
                         <option value="KOA Submitted">KOA Submitted</option>
+                        <option value="Onboarding">Onboarding</option>
                     </select>
                 </div>
-                <div class="filter-group">
-                    <label>⏰ Time Bucket</label>
+                <div class="filter-group" id="industryFilterGroup" style="display:none;"><label>🏭 Industry</label><select class="filter-select" id="industryFilter"><option value="">All Industries</option></select></div>
+                <div class="filter-group"><label>⏰ Time Bucket</label>
                     <select class="filter-select" id="bucketFilter">
                         <option value="">All Buckets</option>
                         <option value="0-3 Months">0-3 Months</option>
@@ -1543,39 +742,20 @@
                         <option value="9+ Months">9+ Months</option>
                     </select>
                 </div>
-                <div class="filter-group">
-                    <label>🌍 Territory</label>
-                    <select class="filter-select" id="territoryFilter"><option value="">All Territories</option></select>
-                </div>
-                <div class="filter-group" style="flex: 1; min-width: 200px;">
-                    <label>🔍 Search</label>
-                    <input type="text" class="search-input" id="searchInput" placeholder="Search opportunities..." />
-                </div>
-                <button class="btn-apply" id="applyFilters">
-                    <span>✨</span> Apply
-                </button>
+                <div class="filter-group"><label>🌍 Territory</label><select class="filter-select" id="territoryFilter"><option value="">All Territories</option></select></div>
+                <div class="filter-group" style="flex: 1; min-width: 200px;"><label>🔍 Search</label><input type="text" class="search-input" id="searchInput" placeholder="Search opportunities..." /></div>
+                <button class="btn-apply" id="applyFilters"><span>✨</span> Apply</button>
                 <button class="btn-clear" id="clearFilters">Clear</button>
             </div>
         </div>
 
         <!-- Charts -->
         <div class="charts-grid" id="chartsGrid">
-            <div class="chart-container">
-                <h3>📊 Pipeline by Stage</h3>
-                <canvas id="stageChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <h3>🌍 Pipeline by Territory</h3>
-                <canvas id="territoryChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <h3>👥 Top Owners</h3>
-                <canvas id="ownerChart"></canvas>
-            </div>
-            <div class="chart-container">
-                <h3>⏰ By Time Bucket</h3>
-                <canvas id="bucketChart"></canvas>
-            </div>
+            <div class="chart-container"><h3>📊 Pipeline by Stage</h3><canvas id="stageChart"></canvas></div>
+            <div class="chart-container"><h3>🌍 Pipeline by Territory</h3><canvas id="territoryChart"></canvas></div>
+            <div class="chart-container" id="industryChartContainer" style="display:none;"><h3>🏭 Pipeline by Industry</h3><canvas id="industryChart"></canvas></div>
+            <div class="chart-container"><h3>👥 Top Owners</h3><canvas id="ownerChart"></canvas></div>
+            <div class="chart-container"><h3>⏰ By Time Bucket</h3><canvas id="bucketChart"></canvas></div>
         </div>
 
         <!-- Data Table -->
@@ -1586,6 +766,7 @@
                     <tr>
                         <th data-sort="name">Opportunity</th>
                         <th data-sort="stage">Stage</th>
+                        <th data-sort="industry" id="industryTableHeader" style="display:none;">Industry</th>
                         <th data-sort="owner">Owner</th>
                         <th data-sort="territory">Territory</th>
                         <th data-sort="arr">ARR</th>
@@ -1606,7 +787,7 @@
         </div>
 
         <footer>
-            <p><strong>Sales Pipeline Dashboard v10.0</strong> | 🌙 Dark Mode • Powered by Huboo Analytics</p>
+            <p><strong>Sales Pipeline Dashboard v11.0</strong> | 🌙 Dark Mode • Powered by Huboo Analytics</p>
             <p style="margin-top: 12px; opacity: 0.85;">Generated on <span id="footerDate"></span></p>
         </footer>
     </div>
@@ -1616,41 +797,25 @@
         let pipelineData = [];
         let summaryData = { iyrr: {}, arr: {} };
         let filteredData = [];
-        let currentPage = 1;
-        let rowsPerPage = 25;
-        let sortColumn = 'arr';
-        let sortDirection = 'desc';
-        let charts = {};
-        let currentSummaryTab = 'iyrr';
-        let dataLoaded = false;
-        let summaryLoaded = false;
-        let filesProcessing = 0;
-        let dateFilter = { start: null, end: null };
-        let isProcessing = false;
+        let currentPage = 1, rowsPerPage = 25, sortColumn = 'arr', sortDirection = 'desc';
+        let charts = {}, currentSummaryTab = 'iyrr';
+        let dataLoaded = false, summaryLoaded = false, filesProcessing = 0;
+        let dateFilter = { start: null, end: null }, isProcessing = false;
+        let hasIndustryData = false; // 🆕 Flag para detectar columna Industry
 
-        // 🎯 ORDEN DE STAGES DEFINIDO POR EL USUARIO
-        const STAGE_ORDER = [
-            'Opportunity Identified',
-            'Quoting', 
-            'Presenting/Negotiating', 
-            'Onboarding', 
-            'KOA Submitted'
-        ];
+        // 🎯 ORDEN DE STAGES DEFINIDO
+        const STAGE_ORDER = ['Opportunity Identified', 'Quoting', 'Presenting/Negotiating', 'KOA Submitted', 'Onboarding'];
 
         // Inicialización
-        document.getElementById('footerDate').textContent = new Date().toLocaleDateString('en-GB', { 
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' 
-        });
+        document.getElementById('footerDate').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         updateLastUpdated();
         setInterval(updateLastUpdated, 60000);
-
         function updateLastUpdated() {
             const now = new Date();
-            document.getElementById('lastUpdated').textContent = 
-                '● Live • ' + now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+            document.getElementById('lastUpdated').textContent = '● Live • ' + now.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
         }
 
-        // Configurar Chart.js para Dark Mode
+        // Chart.js config para Dark Mode
         Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
         Chart.defaults.font.size = 12;
         Chart.defaults.plugins.tooltip.backgroundColor = 'rgba(26, 20, 41, 0.98)';
@@ -1671,354 +836,204 @@
             const parsed = parseFloat(cleaned);
             return isNaN(parsed) ? 0 : parsed;
         }
-
         function parseProbability(val) {
             if (typeof val === 'number') return val > 1 ? val / 100 : val;
             if (!val || val === '' || val === '-') return 0;
             const cleaned = String(val).replace('%', '').trim();
             const num = parseFloat(cleaned);
-            if (isNaN(num)) return 0;
-            return num > 1 ? num / 100 : num;
+            return isNaN(num) ? 0 : (num > 1 ? num / 100 : num);
         }
-
-        function parseDate(val) {
-            if (!val) return null;
-            const d = new Date(val);
-            return isNaN(d.getTime()) ? null : d;
-        }
-
+        function parseDate(val) { if (!val) return null; const d = new Date(val); return isNaN(d.getTime()) ? null : d; }
         const formatMoney = v => {
-            v = parseFloat(v) || 0;
-            const abs = Math.abs(v);
-            const prefix = v < 0 ? '-' : '£';
-            if (abs >= 1000000000) return prefix + (abs/1000000000).toFixed(2) + 'B';
-            if (abs >= 1000000) return prefix + (abs/1000000).toFixed(2) + 'M';
-            if (abs >= 1000) return prefix + (abs/1000).toFixed(0) + 'K';
+            v = parseFloat(v) || 0; const abs = Math.abs(v); const prefix = v < 0 ? '-' : '£';
+            if (abs >= 1e9) return prefix + (abs/1e9).toFixed(2) + 'B';
+            if (abs >= 1e6) return prefix + (abs/1e6).toFixed(2) + 'M';
+            if (abs >= 1e3) return prefix + (abs/1e3).toFixed(0) + 'K';
             return prefix + abs.toFixed(0);
         };
-
         const formatPct = v => ((parseFloat(v) || 0) * 100).toFixed(0) + '%';
-        
-        const getMoneyClass = v => { 
-            v = parseFloat(v) || 0; 
-            if (v >= 500000) return 'positive';
-            if (v <= -100000) return 'negative';
-            return 'neutral'; 
-        };
-        
-        const getProbClass = v => { 
-            v = (parseFloat(v) || 0) * 100; 
-            if (v >= 70) return 'prob-high';
-            if (v >= 40) return 'prob-med';
-            return 'prob-low'; 
-        };
-
+        const getMoneyClass = v => { v = parseFloat(v) || 0; return v >= 500000 ? 'positive' : v <= -100000 ? 'negative' : 'neutral'; };
+        const getProbClass = v => { v = (parseFloat(v) || 0) * 100; return v >= 70 ? 'prob-high' : v >= 40 ? 'prob-med' : 'prob-low'; };
         const getStageBadge = s => {
-            if (!s) return 'badge-quoting';
-            s = s.toLowerCase();
+            if (!s) return 'badge-quoting'; s = s.toLowerCase();
             if (s.includes('koa') || s.includes('submitted')) return 'badge-koa';
             if (s.includes('onboarding')) return 'badge-onboarding';
             if (s.includes('presenting') || s.includes('negotiating')) return 'badge-presenting';
             if (s.includes('identified')) return 'badge-identified';
             return 'badge-quoting';
         };
-
-        // 🎯 Función para ordenar stages según el flujo definido
-        function getStageOrderIndex(stage) {
-            const index = STAGE_ORDER.findIndex(s => s.toLowerCase() === stage.toLowerCase());
-            return index === -1 ? 999 : index;
-        }
-
+        function getStageOrderIndex(stage) { const idx = STAGE_ORDER.findIndex(s => s.toLowerCase() === stage.toLowerCase()); return idx === -1 ? 999 : idx; }
         function showAlert(type, message) {
             document.querySelectorAll('.alert').forEach(a => a.classList.remove('show'));
             const alert = document.getElementById('alert' + type);
-            if (alert) {
-                alert.textContent = message;
-                alert.classList.add('show');
-                setTimeout(() => alert.classList.remove('show'), 8000);
-            }
+            if (alert) { alert.textContent = message; alert.classList.add('show'); setTimeout(() => alert.classList.remove('show'), 8000); }
         }
-
         function switchSummaryTab(tab) {
             currentSummaryTab = tab;
             document.querySelectorAll('.summary-tab').forEach(t => t.classList.remove('active'));
             event.currentTarget.classList.add('active');
             renderSummaryTable();
         }
-
-        function resetFileInput(inputElement) {
-            inputElement.value = '';
-        }
-
-        function escapeHtml(text) {
-            if (!text) return '';
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        }
+        function resetFileInput(el) { el.value = ''; }
+        function escapeHtml(text) { if (!text) return ''; const div = document.createElement('div'); div.textContent = text; return div.innerHTML; }
 
         // ==================== MANEJO DE ARCHIVOS ====================
-        const dataZone = document.getElementById('dataZone');
-        const dataInput = document.getElementById('dataInput');
-        const summaryZone = document.getElementById('summaryZone');
-        const summaryInput = document.getElementById('summaryInput');
+        const dataZone = document.getElementById('dataZone'), dataInput = document.getElementById('dataInput');
+        const summaryZone = document.getElementById('summaryZone'), summaryInput = document.getElementById('summaryInput');
 
-        dataInput.addEventListener('change', function(e) {
-            if (e.target.files[0] && !isProcessing) {
-                console.log('📊 Pipeline file selected:', e.target.files[0].name);
-                isProcessing = true;
-                processDataFile(e.target.files[0]);
-            }
-        });
-
-        summaryInput.addEventListener('change', function(e) {
-            if (e.target.files[0] && !isProcessing) {
-                console.log('📊 Summary file selected:', e.target.files[0].name);
-                isProcessing = true;
-                processSummaryFile(e.target.files[0]);
-            }
-        });
+        dataInput.addEventListener('change', e => { if (e.target.files[0] && !isProcessing) { isProcessing = true; processDataFile(e.target.files[0]); }});
+        summaryInput.addEventListener('change', e => { if (e.target.files[0] && !isProcessing) { isProcessing = true; processSummaryFile(e.target.files[0]); }});
 
         function setupDragDrop(zone, input, handler) {
-            zone.addEventListener('dragover', e => { 
-                e.preventDefault(); 
-                zone.classList.add('dragover'); 
-            });
+            zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
             zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
-            zone.addEventListener('drop', e => { 
-                e.preventDefault(); 
-                zone.classList.remove('dragover'); 
-                if (e.dataTransfer.files[0] && !isProcessing) {
-                    console.log('📊 File dropped:', e.dataTransfer.files[0].name);
-                    isProcessing = true;
-                    input.files = e.dataTransfer.files;
-                    handler(e.dataTransfer.files[0]);
-                }
-            });
-            zone.addEventListener('click', (e) => {
-                if (!e.target.closest('.upload-btn')) {
-                    input.click();
-                }
-            });
+            zone.addEventListener('drop', e => { e.preventDefault(); zone.classList.remove('dragover'); if (e.dataTransfer.files[0] && !isProcessing) { isProcessing = true; input.files = e.dataTransfer.files; handler(e.dataTransfer.files[0]); }});
+            zone.addEventListener('click', e => { if (!e.target.closest('.upload-btn')) input.click(); });
         }
-
-        setupDragDrop(dataZone, dataInput, (file) => processDataFile(file));
-        setupDragDrop(summaryZone, summaryInput, (file) => processSummaryFile(file));
+        setupDragDrop(dataZone, dataInput, f => processDataFile(f));
+        setupDragDrop(summaryZone, summaryInput, f => processSummaryFile(f));
 
         function processDataFile(file) {
-            document.getElementById('loading').classList.add('show');
-            filesProcessing++;
-            
-            Papa.parse(file, {
-                encoding: 'UTF-8',
-                skipEmptyLines: true,
-                complete: function(results) {
-                    console.log('✅ Pipeline CSV parsed:', results.data.length, 'rows');
-                    const warnings = parsePipelineCSV(results.data);
-                    
-                    document.getElementById('dataZone').classList.add('loaded');
-                    document.getElementById('dataFileName').textContent = file.name;
-                    document.getElementById('dataRows').textContent = 
-                        `${pipelineData.length.toLocaleString()} opportunities loaded`;
-                    document.getElementById('dataInfo').classList.add('show');
-                    dataLoaded = true;
-                    filesProcessing--;
-                    isProcessing = false;
-                    
-                    if (warnings.length > 0) {
-                        showAlert('warning', '⚠️ Data Quality: ' + warnings.slice(0, 2).join(' | '));
-                    }
-                    resetFileInput(dataInput);
-                    checkReady();
-                },
-                error: function(err) {
-                    console.error('❌ Pipeline parse error:', err);
-                    showAlert('error', 'Error reading Pipeline Data: ' + err.message);
-                    document.getElementById('loading').classList.remove('show');
-                    filesProcessing--;
-                    isProcessing = false;
-                    resetFileInput(dataInput);
+            document.getElementById('loading').classList.add('show'); filesProcessing++;
+            Papa.parse(file, { encoding: 'UTF-8', skipEmptyLines: true, complete: function(results) {
+                console.log('✅ Pipeline CSV parsed:', results.data.length, 'rows');
+                const { warnings, hasIndustry } = parsePipelineCSV(results.data);
+                hasIndustryData = hasIndustry; // 🆕 Detectar Industry
+                document.getElementById('dataZone').classList.add('loaded');
+                document.getElementById('dataFileName').textContent = file.name;
+                document.getElementById('dataRows').textContent = `${pipelineData.length.toLocaleString()} opportunities loaded`;
+                document.getElementById('dataInfo').classList.add('show');
+                dataLoaded = true; filesProcessing--; isProcessing = false;
+                if (warnings.length > 0) showAlert('warning', '⚠️ Data Quality: ' + warnings.slice(0, 2).join(' | '));
+                if (hasIndustryData) {
+                    showAlert('info', '🏭 Industry column detected! Dashboard auto-updated with Industry analytics.');
+                    setupIndustryFeatures();
                 }
-            });
+                resetFileInput(dataInput); checkReady();
+            }, error: function(err) {
+                console.error('❌ Pipeline parse error:', err);
+                showAlert('error', 'Error reading Pipeline Data: ' + err.message);
+                document.getElementById('loading').classList.remove('show'); filesProcessing--; isProcessing = false; resetFileInput(dataInput);
+            }});
         }
 
         function processSummaryFile(file) {
             filesProcessing++;
-            
-            Papa.parse(file, {
-                encoding: 'UTF-8',
-                skipEmptyLines: false,
-                complete: function(results) {
-                    console.log('✅ Summary CSV parsed:', results.data.length, 'rows');
-                    const parseSuccess = parseSummaryCSV(results.data);
-                    
-                    if (parseSuccess) {
-                        document.getElementById('summaryZone').classList.add('loaded');
-                        document.getElementById('summaryFileName').textContent = file.name;
-                        document.getElementById('summaryRows').textContent = 'Summary data loaded';
-                        document.getElementById('summaryInfo').classList.add('show');
-                        summaryLoaded = true;
-                        const iyrrTotal = summaryData.iyrr['Total']?.short?.revenue || 0;
-                        const arrTotal = summaryData.arr['Total']?.short?.revenue || 0;
-                        showAlert('success', 
-                            `✅ Executive Summary loaded • IYR: ${formatMoney(iyrrTotal)} • ARR: ${formatMoney(arrTotal)}`
-                        );
-                    } else {
-                        showAlert('error', '❌ Could not parse Summary CSV. Check file format.');
-                    }
-                    
-                    filesProcessing--;
-                    isProcessing = false;
-                    resetFileInput(summaryInput);
-                    checkReady();
-                },
-                error: function(err) {
-                    console.error('❌ Summary parse error:', err);
-                    showAlert('error', 'Error reading Summary: ' + err.message);
-                    filesProcessing--;
-                    isProcessing = false;
-                    resetFileInput(summaryInput);
-                }
-            });
+            Papa.parse(file, { encoding: 'UTF-8', skipEmptyLines: false, complete: function(results) {
+                console.log('✅ Summary CSV parsed:', results.data.length, 'rows');
+                const parseSuccess = parseSummaryCSV(results.data);
+                if (parseSuccess) {
+                    document.getElementById('summaryZone').classList.add('loaded');
+                    document.getElementById('summaryFileName').textContent = file.name;
+                    document.getElementById('summaryRows').textContent = 'Summary data loaded';
+                    document.getElementById('summaryInfo').classList.add('show');
+                    summaryLoaded = true;
+                    const iyrrTotal = summaryData.iyrr['Total']?.short?.revenue || 0;
+                    const arrTotal = summaryData.arr['Total']?.short?.revenue || 0;
+                    showAlert('success', `✅ Executive Summary loaded • IYR: ${formatMoney(iyrrTotal)} • ARR: ${formatMoney(arrTotal)}`);
+                } else { showAlert('error', '❌ Could not parse Summary CSV. Check file format.'); }
+                filesProcessing--; isProcessing = false; resetFileInput(summaryInput); checkReady();
+            }, error: function(err) {
+                console.error('❌ Summary parse error:', err);
+                showAlert('error', 'Error reading Summary: ' + err.message);
+                filesProcessing--; isProcessing = false; resetFileInput(summaryInput);
+            }});
+        }
+
+        // 🆕 Función para activar características de Industry
+        function setupIndustryFeatures() {
+            document.getElementById('industryFilterGroup').style.display = 'flex';
+            document.getElementById('industryTableHeader').style.display = 'table-cell';
+            document.getElementById('industryChartContainer').style.display = 'block';
+            // Re-renderizar con industry
+            populateFilters();
+            renderIndustryBreakdownMini();
+            updateCharts();
         }
 
         function checkReady() {
             if (filesProcessing > 0) return;
-            
-            document.getElementById('loading').classList.remove('show');
-            updateLastUpdated();
-            
+            document.getElementById('loading').classList.remove('show'); updateLastUpdated();
             if (dataLoaded) {
-                document.getElementById('actionBar').classList.add('show');
                 document.getElementById('kpiRow').classList.add('show');
                 document.getElementById('stageBreakdownMini').classList.add('show');
                 document.getElementById('filtersSection').classList.add('show');
                 document.getElementById('dateFilterSection').classList.add('show');
                 document.getElementById('chartsGrid').classList.add('show');
                 document.getElementById('tableContainer').classList.add('show');
-                
-                populateFilters();
-                updateKPIs();
-                renderStageBreakdownMini();
-                renderRiskAlerts();
-                renderTable();
-                updateCharts();
-                
+                populateFilters(); updateKPIs(); renderStageBreakdownMini(); renderRiskAlerts(); renderTable(); updateCharts();
                 showAlert('success', `✅ Pipeline Data loaded: ${pipelineData.length.toLocaleString()} opportunities`);
             }
-            if (summaryLoaded) {
-                document.getElementById('summarySection').classList.add('show');
-                renderSummaryTable();
-            }
-            if (dataLoaded && summaryLoaded) {
-                showAlert('success', '🎉 All data loaded successfully! Dashboard ready.');
-            }
+            if (summaryLoaded) { document.getElementById('summarySection').classList.add('show'); renderSummaryTable(); }
+            if (dataLoaded && summaryLoaded) showAlert('success', '🎉 All data loaded successfully! Dashboard ready.');
         }
 
         function parsePipelineCSV(data) {
-            if (data.length < 2) return [];
-            const headers = data[0];
-            const warnings = [];
-            
+            if (data.length < 2) return { warnings: [], hasIndustry: false };
+            const headers = data[0]; const warnings = [];
             let emptyARR = 0, emptyIYR = 0, nextYearBucket = 0;
-            
+            // 🆕 Detectar columna Industry
+            const industryColIdx = headers.findIndex(h => h && h.toLowerCase().includes('industry'));
+            const hasIndustry = industryColIdx !== -1;
+
             pipelineData = data.slice(1).map(row => {
-                const getCol = (names) => {
-                    for (const name of names) {
-                        const idx = headers.findIndex(h => h && h.toLowerCase().includes(name.toLowerCase()));
-                        if (idx !== -1 && row[idx]) return row[idx];
-                    }
-                    return null;
-                };
-                
+                const getCol = (names) => { for (const name of names) { const idx = headers.findIndex(h => h && h.toLowerCase().includes(name.toLowerCase())); if (idx !== -1 && row[idx]) return row[idx]; } return null; };
                 const arr = parseCurrency(getCol(['arr']));
                 const iyrr = parseCurrency(getCol(['iyr', 'in year revenue']));
                 const probability = parseProbability(getCol(['probability', 'prob', 'win prob']));
                 const weighted = parseCurrency(getCol(['arr weighted', 'weighted', 'weighted arr']));
                 let bucket = getCol(['bucket', 'time bucket', 'timeline']) || 'Unknown';
                 const goLive = parseDate(getCol(['go live est', 'go live', 'close date', 'expected close']));
-                
-                if (arr === 0) emptyARR++;
-                if (iyrr === 0) emptyIYR++;
+                // 🆕 Parsear Industry si existe
+                const industry = hasIndustry ? (row[industryColIdx] || 'Unknown') : null;
+                if (arr === 0) emptyARR++; if (iyrr === 0) emptyIYR++;
                 if (bucket.includes('Next Year')) { nextYearBucket++; bucket = '9+ Months'; }
-                
                 return {
                     name: getCol(['opportunity', 'opportunity name', 'name', 'deal name']) || 'Unknown',
                     stage: getCol(['stage', 'sales stage', 'pipeline stage']) || 'Unknown',
                     owner: getCol(['owner', 'opportunity owner', 'account owner']) || 'Unassigned',
                     territory: getCol(['territory', 'region', 'market']) || 'Unknown',
-                    arr: arr,
-                    iyrr: iyrr,
-                    probability: probability,
+                    industry: industry, // 🆕 Campo Industry
+                    arr: arr, iyrr: iyrr, probability: probability,
                     weighted: weighted > 0 ? weighted : arr * probability,
-                    bucket: bucket,
-                    goLive: goLive,
+                    bucket: bucket, goLive: goLive,
                     goLiveStr: getCol(['go live est', 'go live', 'close date', 'expected close']) || ''
                 };
             }).filter(r => r.name !== 'Unknown');
-            
             if (emptyARR > 0) warnings.push(`${emptyARR} opportunities with £0 ARR`);
             if (emptyIYR > 0) warnings.push(`${emptyIYR} opportunities with £0 IYR`);
             if (nextYearBucket > 0) warnings.push(`${nextYearBucket} opportunities normalized to 9+ Months`);
-            
-            console.log('📊 Pipeline ', pipelineData.length, 'rows');
-            return warnings;
+            console.log('📊 Pipeline ', pipelineData.length, 'rows | Industry:', hasIndustry ? 'YES' : 'NO');
+            return { warnings, hasIndustry };
         }
 
         function parseSummaryCSV(data) {
             console.log('🔍 Parsing Summary CSV...', data.length, 'rows');
             summaryData = { iyrr: {}, arr: {} };
-            
-            let currentSection = null;
-            let iyrFound = false;
-            let arrFound = false;
-            
+            let currentSection = null, iyrFound = false, arrFound = false;
             for (let idx = 0; idx < data.length; idx++) {
-                const row = data[idx];
-                if (!row || row.length === 0) continue;
-                
+                const row = data[idx]; if (!row || row.length === 0) continue;
                 const rowStr = row.join(',').toLowerCase();
-                
-                if (row[0] && (row[0].toLowerCase().includes('iyr') || row[0].toLowerCase().includes('in year'))) {
-                    currentSection = 'iyrr';
-                    iyrFound = true;
-                    continue;
-                }
-                
-                if (row[0] && row[0].toUpperCase().trim() === 'ARR') {
-                    currentSection = 'arr';
-                    arrFound = true;
-                    continue;
-                }
-                
+                if (row[0] && (row[0].toLowerCase().includes('iyr') || row[0].toLowerCase().includes('in year'))) { currentSection = 'iyrr'; iyrFound = true; continue; }
+                if (row[0] && row[0].toUpperCase().trim() === 'ARR') { currentSection = 'arr'; arrFound = true; continue; }
                 if (!currentSection) continue;
                 if (row[0] && row[0].toLowerCase().includes('stage')) continue;
                 if (row[0] && row[0].toLowerCase().includes('month')) continue;
                 if (row[0] && row[0].includes('-')) continue;
-                
                 const stageName = row[0] ? row[0].trim() : '';
                 const validStages = ['Quoting', 'Presenting', 'Negotiating', 'KOA', 'Onboarding', 'Total', 'Opportunity Identified'];
                 const isStageRow = validStages.some(s => stageName.toLowerCase().includes(s.toLowerCase()));
-                
                 if (isStageRow && row.length >= 10) {
                     let normalizedStage = stageName;
-                    if (stageName.toLowerCase().includes('presenting') || stageName.toLowerCase().includes('negotiating')) {
-                        normalizedStage = 'Presenting/Negotiating';
-                    }
+                    if (stageName.toLowerCase().includes('presenting') || stageName.toLowerCase().includes('negotiating')) normalizedStage = 'Presenting/Negotiating';
                     if (stageName.toLowerCase().includes('koa')) normalizedStage = 'KOA Submitted';
                     if (stageName.toLowerCase().includes('onboard')) normalizedStage = 'Onboarding';
                     if (stageName.toLowerCase().includes('quoting')) normalizedStage = 'Quoting';
                     if (stageName.toLowerCase().includes('identified')) normalizedStage = 'Opportunity Identified';
                     if (stageName.toLowerCase().includes('total')) normalizedStage = 'Total';
-                    
                     if (!summaryData[currentSection][normalizedStage]) {
-                        summaryData[currentSection][normalizedStage] = {
-                            short: { revenue: 0, prob: 0, weighted: 0 },
-                            medium: { revenue: 0, prob: 0, weighted: 0 },
-                            long: { revenue: 0, prob: 0, weighted: 0 }
-                        };
+                        summaryData[currentSection][normalizedStage] = { short: { revenue: 0, prob: 0, weighted: 0 }, medium: { revenue: 0, prob: 0, weighted: 0 }, long: { revenue: 0, prob: 0, weighted: 0 } };
                     }
-                    
                     summaryData[currentSection][normalizedStage].short.revenue = parseCurrency(row[1]);
                     summaryData[currentSection][normalizedStage].short.prob = parseProbability(row[2]);
                     summaryData[currentSection][normalizedStage].short.weighted = parseCurrency(row[3]);
@@ -2030,7 +1045,6 @@
                     summaryData[currentSection][normalizedStage].long.weighted = parseCurrency(row[9]);
                 }
             }
-            
             console.log('📊 Summary parsed - IYR:', iyrFound, '| ARR:', arrFound);
             return iyrFound || arrFound;
         }
@@ -2038,135 +1052,68 @@
         // ==================== ALERTAS DE RIESGO ====================
         function renderRiskAlerts() {
             const data = filteredData.length > 0 ? filteredData : pipelineData;
-            const riskGrid = document.getElementById('riskGrid');
-            const riskAlerts = document.getElementById('riskAlerts');
-            
+            const riskGrid = document.getElementById('riskGrid'), riskAlerts = document.getElementById('riskAlerts');
             const lowProb = data.filter(r => r.probability < 0.3 && r.arr > 50000);
             const oldOpps = data.filter(r => r.goLive && (new Date() - r.goLive) > (90 * 24 * 60 * 60 * 1000));
             const highValue = data.filter(r => r.arr > 500000 && r.probability < 0.5);
-            
             const risks = [
                 { title: 'Low Probability High Value', count: lowProb.length, value: lowProb.reduce((s, r) => s + r.arr, 0), desc: 'Deals with <30% probability but >£50K ARR', type: 'high' },
                 { title: 'Stale Opportunities', count: oldOpps.length, value: oldOpps.reduce((s, r) => s + r.arr, 0), desc: 'No update in 90+ days', type: 'medium' },
                 { title: 'At Risk High Value', count: highValue.length, value: highValue.reduce((s, r) => s + r.arr, 0), desc: '>$500K ARR with <50% probability', type: 'high' }
             ];
-            
             if (risks.some(r => r.count > 0)) {
                 riskAlerts.classList.add('show');
-                riskGrid.innerHTML = risks.map(r => `
-                    <div class="risk-card ${r.type === 'high' ? '' : 'medium'}">
-                        <div class="risk-title">${r.title}</div>
-                        <div class="risk-value">${r.count} deals • ${formatMoney(r.value)}</div>
-                        <div class="risk-desc">${r.desc}</div>
-                    </div>
-                `).join('');
-            } else {
-                riskAlerts.classList.remove('show');
-            }
+                riskGrid.innerHTML = risks.map(r => `<div class="risk-card ${r.type === 'high' ? '' : 'medium'}"><div class="risk-title">${r.title}</div><div class="risk-value">${r.count} deals • ${formatMoney(r.value)}</div><div class="risk-desc">${r.desc}</div></div>`).join('');
+            } else { riskAlerts.classList.remove('show'); }
         }
 
-        // ==================== FILTRO DE FECHAS ====================
+        // ==================== FILTROS ====================
         function applyDateFilter() {
-            const start = document.getElementById('dateStart').value;
-            const end = document.getElementById('dateEnd').value;
-            dateFilter.start = start ? new Date(start) : null;
-            dateFilter.end = end ? new Date(end) : null;
-            applyFilters();
-            showAlert('info', `📅 Date filter: ${start || 'Any'} → ${end || 'Any'}`);
+            const start = document.getElementById('dateStart').value, end = document.getElementById('dateEnd').value;
+            dateFilter.start = start ? new Date(start) : null; dateFilter.end = end ? new Date(end) : null;
+            applyFilters(); showAlert('info', `📅 Date filter: ${start || 'Any'} → ${end || 'Any'}`);
         }
-
         function clearDateFilter() {
-            document.getElementById('dateStart').value = '';
-            document.getElementById('dateEnd').value = '';
-            dateFilter.start = null;
-            dateFilter.end = null;
-            applyFilters();
-            showAlert('info', '📅 Date filter cleared');
+            document.getElementById('dateStart').value = ''; document.getElementById('dateEnd').value = '';
+            dateFilter.start = null; dateFilter.end = null; applyFilters(); showAlert('info', '📅 Date filter cleared');
         }
-
-        // ==================== TABLA DE RESUMEN ====================
-        function renderSummaryTable() {
-            const data = summaryData[currentSummaryTab];
-            const tbody = document.getElementById('summaryTableBody');
-            
-            if (Object.keys(data).length === 0) {
-                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text-secondary);">Upload Summary CSV to see executive data</td></tr>';
-                return;
+        function populateFilters() {
+            const owners = [...new Set(pipelineData.map(r => r.owner))].filter(Boolean).sort();
+            const territories = [...new Set(pipelineData.map(r => r.territory))].filter(Boolean).sort();
+            const ownerFilter = document.getElementById('ownerFilter');
+            ownerFilter.innerHTML = '<option value="">All Owners</option>' + owners.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
+            const territoryFilter = document.getElementById('territoryFilter');
+            territoryFilter.innerHTML = '<option value="">All Territories</option>' + territories.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
+            // 🆕 Industry filter
+            if (hasIndustryData) {
+                const industries = [...new Set(pipelineData.map(r => r.industry).filter(Boolean))].sort();
+                const industryFilter = document.getElementById('industryFilter');
+                industryFilter.innerHTML = '<option value="">All Industries</option>' + industries.map(i => `<option value="${escapeHtml(i)}">${escapeHtml(i)}</option>`).join('');
             }
-            
-            // Ordenar stages según el flujo definido + Total al final
-            const stages = [...STAGE_ORDER, 'Total'].filter(stage => data[stage]);
-            let shortTotal = { revenue: 0, prob: 0, weighted: 0 };
-            let mediumTotal = { revenue: 0, prob: 0, weighted: 0 };
-            let longTotal = { revenue: 0, prob: 0, weighted: 0 };
-            
-            tbody.innerHTML = stages.map(stage => {
-                const s = data[stage];
-                if (!s) return '';
-                
-                if (stage !== 'Total') {
-                    shortTotal.revenue += s.short.revenue;
-                    shortTotal.prob += s.short.prob;
-                    shortTotal.weighted += s.short.weighted;
-                    mediumTotal.revenue += s.medium.revenue;
-                    mediumTotal.prob += s.medium.prob;
-                    mediumTotal.weighted += s.medium.weighted;
-                    longTotal.revenue += s.long.revenue;
-                    longTotal.prob += s.long.prob;
-                    longTotal.weighted += s.long.weighted;
-                }
-                
-                const isTotal = stage === 'Total';
-                const shortClass = getMoneyClass(s.short.weighted);
-                const mediumClass = getMoneyClass(s.medium.weighted);
-                const longClass = getMoneyClass(s.long.weighted);
-                
-                return `<tr class="${isTotal ? 'total-row' : ''}">
-                    <td><strong>${stage}</strong></td>
-                    <td class="money">${formatMoney(s.short.revenue)}</td>
-                    <td class="pct">${formatPct(s.short.prob)}</td>
-                    <td class="money ${shortClass}">${formatMoney(s.short.weighted)}</td>
-                    <td class="money">${formatMoney(s.medium.revenue)}</td>
-                    <td class="pct">${formatPct(s.medium.prob)}</td>
-                    <td class="money ${mediumClass}">${formatMoney(s.medium.weighted)}</td>
-                    <td class="money">${formatMoney(s.long.revenue)}</td>
-                    <td class="pct">${formatPct(s.long.prob)}</td>
-                    <td class="money ${longClass}">${formatMoney(s.long.weighted)}</td>
-                </tr>`;
-            }).filter(Boolean).join('');
-            
-            document.getElementById('bucketShortTotal').textContent = formatMoney(shortTotal.revenue);
-            document.getElementById('bucketShortWeighted').textContent = formatMoney(shortTotal.weighted);
-            document.getElementById('bucketShortWeighted').className = getMoneyClass(shortTotal.weighted);
-            document.getElementById('bucketMediumTotal').textContent = formatMoney(mediumTotal.revenue);
-            document.getElementById('bucketMediumWeighted').textContent = formatMoney(mediumTotal.weighted);
-            document.getElementById('bucketMediumWeighted').className = getMoneyClass(mediumTotal.weighted);
-            document.getElementById('bucketLongTotal').textContent = formatMoney(longTotal.revenue);
-            document.getElementById('bucketLongWeighted').textContent = formatMoney(longTotal.weighted);
-            document.getElementById('bucketLongWeighted').className = getMoneyClass(longTotal.weighted);
         }
-
-        // ==================== BREAKDOWN DE STAGES MINI ====================
-        function renderStageBreakdownMini() {
-            const stageData = {};
-            pipelineData.forEach(r => {
-                if (!stageData[r.stage]) stageData[r.stage] = { count: 0, arr: 0 };
-                stageData[r.stage].count++;
-                stageData[r.stage].arr += r.arr || 0;
+        function applyFilters() {
+            const owner = document.getElementById('ownerFilter').value, stage = document.getElementById('stageFilter').value;
+            const bucket = document.getElementById('bucketFilter').value, territory = document.getElementById('territoryFilter').value;
+            const industry = hasIndustryData ? document.getElementById('industryFilter').value : '';
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            filteredData = pipelineData.filter(r => {
+                if (owner && r.owner !== owner) return false;
+                if (stage && r.stage !== stage) return false;
+                if (hasIndustryData && industry && r.industry !== industry) return false;
+                if (bucket && !r.bucket.includes(bucket.split(' ')[0])) return false;
+                if (territory && r.territory !== territory) return false;
+                if (search && !r.name.toLowerCase().includes(search) && !r.owner.toLowerCase().includes(search)) return false;
+                if (dateFilter.start && r.goLive && r.goLive < dateFilter.start) return false;
+                if (dateFilter.end && r.goLive && r.goLive > dateFilter.end) return false;
+                return true;
             });
-            
-            const container = document.getElementById('stageBreakdownMini');
-            // Ordenar por el flujo definido
-            const sortedStages = Object.entries(stageData)
-                .sort((a, b) => getStageOrderIndex(a[0]) - getStageOrderIndex(b[0]));
-            
-            container.innerHTML = sortedStages.map(([stage, data]) => `
-                <div class="stage-mini-card">
-                    <div class="stage-name">${stage}</div>
-                    <div class="stage-value money ${getMoneyClass(data.arr)}">${formatMoney(data.arr)}</div>
-                    <div class="stage-count">${data.count} opp${data.count !== 1 ? 's' : ''}</div>
-                </div>
-            `).join('');
+            filteredData.sort((a, b) => {
+                let va = a[sortColumn], vb = b[sortColumn];
+                if (typeof va === 'string') { va = va.toLowerCase(); vb = vb.toLowerCase(); return sortDirection === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va); }
+                return sortDirection === 'asc' ? (va || 0) - (vb || 0) : (vb || 0) - (va || 0);
+            });
+            currentPage = 1; updateKPIs(); renderStageBreakdownMini(); if (hasIndustryData) renderIndustryBreakdownMini();
+            renderRiskAlerts(); renderTable(); updateCharts();
         }
 
         // ==================== KPIS ====================
@@ -2175,19 +1122,11 @@
             const totalArr = data.reduce((s, r) => s + (r.arr || 0), 0);
             const totalWeighted = data.reduce((s, r) => s + (r.weighted || 0), 0);
             const avgProb = data.length ? data.reduce((s, r) => s + (r.probability || 0), 0) / data.length : 0;
-            
-            animateValue('kpiTotal', totalArr, formatMoney);
-            animateValue('kpiWeighted', totalWeighted, formatMoney);
-            animateValue('kpiCount', data.length, v => v.toLocaleString());
-            animateValue('kpiProb', avgProb * 100, v => v.toFixed(0) + '%');
+            animateValue('kpiTotal', totalArr, formatMoney); animateValue('kpiWeighted', totalWeighted, formatMoney);
+            animateValue('kpiCount', data.length, v => v.toLocaleString()); animateValue('kpiProb', avgProb * 100, v => v.toFixed(0) + '%');
         }
-
         function animateValue(elementId, target, formatter) {
-            const element = document.getElementById(elementId);
-            const duration = 800;
-            const start = 0;
-            const startTime = performance.now();
-            
+            const element = document.getElementById(elementId); const duration = 800, start = 0, startTime = performance.now();
             function update(currentTime) {
                 const progress = Math.min((currentTime - startTime) / duration, 1);
                 const eased = 1 - Math.pow(1 - progress, 3);
@@ -2198,337 +1137,111 @@
             requestAnimationFrame(update);
         }
 
-        // ==================== FILTROS ====================
-        function populateFilters() {
-            const owners = [...new Set(pipelineData.map(r => r.owner))].filter(Boolean).sort();
-            const territories = [...new Set(pipelineData.map(r => r.territory))].filter(Boolean).sort();
-            
-            const ownerFilter = document.getElementById('ownerFilter');
-            ownerFilter.innerHTML = '<option value="">All Owners</option>' + 
-                owners.map(o => `<option value="${escapeHtml(o)}">${escapeHtml(o)}</option>`).join('');
-            
-            const territoryFilter = document.getElementById('territoryFilter');
-            territoryFilter.innerHTML = '<option value="">All Territories</option>' + 
-                territories.map(t => `<option value="${escapeHtml(t)}">${escapeHtml(t)}</option>`).join('');
+        // ==================== BREAKDOWN DE STAGES & INDUSTRY ====================
+        function renderStageBreakdownMini() {
+            const stageData = {}; pipelineData.forEach(r => { if (!stageData[r.stage]) stageData[r.stage] = { count: 0, arr: 0 }; stageData[r.stage].count++; stageData[r.stage].arr += r.arr || 0; });
+            const container = document.getElementById('stageBreakdownMini');
+            const sortedStages = Object.entries(stageData).sort((a, b) => getStageOrderIndex(a[0]) - getStageOrderIndex(b[0]));
+            container.innerHTML = sortedStages.map(([stage, data]) => `<div class="stage-mini-card"><div class="stage-name">${stage}</div><div class="stage-value money ${getMoneyClass(data.arr)}">${formatMoney(data.arr)}</div><div class="stage-count">${data.count} opp${data.count !== 1 ? 's' : ''}</div></div>`).join('');
+        }
+        // 🆕 Render Industry Breakdown
+        function renderIndustryBreakdownMini() {
+            if (!hasIndustryData) return;
+            const industryData = {}; pipelineData.forEach(r => { if (r.industry) { if (!industryData[r.industry]) industryData[r.industry] = { count: 0, arr: 0 }; industryData[r.industry].count++; industryData[r.industry].arr += r.arr || 0; }});
+            const container = document.getElementById('industryBreakdownMini');
+            const sortedIndustries = Object.entries(industryData).sort((a, b) => b[1].arr - a[1].arr).slice(0, 6); // Top 6
+            container.innerHTML = sortedIndustries.map(([industry, data]) => `<div class="industry-mini-card"><div class="industry-name">${industry}</div><div class="industry-value money ${getMoneyClass(data.arr)}">${formatMoney(data.arr)}</div><div class="industry-count">${data.count} opp${data.count !== 1 ? 's' : ''}</div></div>`).join('');
+            container.classList.add('show');
         }
 
-        function applyFilters() {
-            const owner = document.getElementById('ownerFilter').value;
-            const stage = document.getElementById('stageFilter').value;
-            const bucket = document.getElementById('bucketFilter').value;
-            const territory = document.getElementById('territoryFilter').value;
-            const search = document.getElementById('searchInput').value.toLowerCase();
-            
-            filteredData = pipelineData.filter(r => {
-                if (owner && r.owner !== owner) return false;
-                if (stage && r.stage !== stage) return false;
-                if (bucket && !r.bucket.includes(bucket.split(' ')[0])) return false;
-                if (territory && r.territory !== territory) return false;
-                if (search && !r.name.toLowerCase().includes(search) && !r.owner.toLowerCase().includes(search)) return false;
-                if (dateFilter.start && r.goLive && r.goLive < dateFilter.start) return false;
-                if (dateFilter.end && r.goLive && r.goLive > dateFilter.end) return false;
-                return true;
-            });
-            
-            filteredData.sort((a, b) => {
-                let va = a[sortColumn], vb = b[sortColumn];
-                if (typeof va === 'string') { 
-                    va = va.toLowerCase(); vb = vb.toLowerCase(); 
-                    return sortDirection === 'asc' ? va.localeCompare(vb) : vb.localeCompare(va); 
-                }
-                return sortDirection === 'asc' ? (va || 0) - (vb || 0) : (vb || 0) - (va || 0);
-            });
-            
-            currentPage = 1;
-            updateKPIs();
-            renderStageBreakdownMini();
-            renderRiskAlerts();
-            renderTable();
-            updateCharts();
+        // ==================== TABLA DE RESUMEN ====================
+        function renderSummaryTable() {
+            const data = summaryData[currentSummaryTab], tbody = document.getElementById('summaryTableBody');
+            if (Object.keys(data).length === 0) { tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:40px;color:var(--text-secondary);">Upload Summary CSV to see executive data</td></tr>'; return; }
+            const stages = [...STAGE_ORDER, 'Total'].filter(stage => data[stage]);
+            let shortTotal = { revenue: 0, prob: 0, weighted: 0 }, mediumTotal = { revenue: 0, prob: 0, weighted: 0 }, longTotal = { revenue: 0, prob: 0, weighted: 0 };
+            tbody.innerHTML = stages.map(stage => {
+                const s = data[stage]; if (!s) return '';
+                if (stage !== 'Total') { shortTotal.revenue += s.short.revenue; shortTotal.prob += s.short.prob; shortTotal.weighted += s.short.weighted; mediumTotal.revenue += s.medium.revenue; mediumTotal.prob += s.medium.prob; mediumTotal.weighted += s.medium.weighted; longTotal.revenue += s.long.revenue; longTotal.prob += s.long.prob; longTotal.weighted += s.long.weighted; }
+                const isTotal = stage === 'Total'; const shortClass = getMoneyClass(s.short.weighted), mediumClass = getMoneyClass(s.medium.weighted), longClass = getMoneyClass(s.long.weighted);
+                return `<tr class="${isTotal ? 'total-row' : ''}"><td><strong>${stage}</strong></td><td class="money">${formatMoney(s.short.revenue)}</td><td class="pct">${formatPct(s.short.prob)}</td><td class="money ${shortClass}">${formatMoney(s.short.weighted)}</td><td class="money">${formatMoney(s.medium.revenue)}</td><td class="pct">${formatPct(s.medium.prob)}</td><td class="money ${mediumClass}">${formatMoney(s.medium.weighted)}</td><td class="money">${formatMoney(s.long.revenue)}</td><td class="pct">${formatPct(s.long.prob)}</td><td class="money ${longClass}">${formatMoney(s.long.weighted)}</td></tr>`;
+            }).filter(Boolean).join('');
+            document.getElementById('bucketShortTotal').textContent = formatMoney(shortTotal.revenue);
+            document.getElementById('bucketShortWeighted').textContent = formatMoney(shortTotal.weighted); document.getElementById('bucketShortWeighted').className = getMoneyClass(shortTotal.weighted);
+            document.getElementById('bucketMediumTotal').textContent = formatMoney(mediumTotal.revenue);
+            document.getElementById('bucketMediumWeighted').textContent = formatMoney(mediumTotal.weighted); document.getElementById('bucketMediumWeighted').className = getMoneyClass(mediumTotal.weighted);
+            document.getElementById('bucketLongTotal').textContent = formatMoney(longTotal.revenue);
+            document.getElementById('bucketLongWeighted').textContent = formatMoney(longTotal.weighted); document.getElementById('bucketLongWeighted').className = getMoneyClass(longTotal.weighted);
         }
 
         // ==================== TABLA DE DATOS ====================
         function renderTable() {
             const tbody = document.getElementById('tableBody');
-            const start = (currentPage - 1) * rowsPerPage;
-            const page = filteredData.slice(start, start + rowsPerPage);
+            const start = (currentPage - 1) * rowsPerPage; const page = filteredData.slice(start, start + rowsPerPage);
             const totalPages = Math.max(1, Math.ceil(filteredData.length / rowsPerPage));
-            
-            if (!page.length) {
-                tbody.innerHTML = '<tr><td colspan="10" style="text-align:center;padding:60px;color:var(--text-secondary);">✨ No results match your filters</td></tr>';
-            } else {
+            if (!page.length) { tbody.innerHTML = '<tr><td colspan="11" style="text-align:center;padding:60px;color:var(--text-secondary);">✨ No results match your filters</td></tr>'; }
+            else {
                 tbody.innerHTML = page.map(r => {
-                    const probPct = (r.probability || 0) * 100;
-                    const probClass = getProbClass(r.probability);
-                    const moneyClass = getMoneyClass(r.arr);
-                    const weightedClass = getMoneyClass(r.weighted);
+                    const probPct = (r.probability || 0) * 100, probClass = getProbClass(r.probability);
+                    const moneyClass = getMoneyClass(r.arr), weightedClass = getMoneyClass(r.weighted);
                     const goLiveDate = r.goLiveStr ? r.goLiveStr : '-';
-                    
-                    return `<tr>
-                        <td><strong style="color: var(--text-primary);">${escapeHtml(r.name)}</strong></td>
-                        <td><span class="badge ${getStageBadge(r.stage)}">${escapeHtml(r.stage)}</span></td>
-                        <td>${escapeHtml(r.owner)}</td>
-                        <td><span class="badge badge-territory">${escapeHtml(r.territory)}</span></td>
-                        <td><span class="money ${moneyClass}">${formatMoney(r.arr)}</span></td>
-                        <td><span class="money">${formatMoney(r.iyrr)}</span></td>
-                        <td>
-                            <div class="prob-cell">
-                                <div class="prob-bar">
-                                    <div class="prob-fill ${probClass}" style="width: ${probPct}%"></div>
-                                </div>
-                                <span style="font-weight:600">${formatPct(r.probability)}</span>
-                            </div>
-                        </td>
-                        <td><span class="money ${weightedClass}">${formatMoney(r.weighted)}</span></td>
-                        <td><span class="badge badge-bucket">${escapeHtml(r.bucket)}</span></td>
-                        <td>${escapeHtml(goLiveDate)}</td>
-                    </tr>`;
+                    const industryCell = hasIndustryData ? `<td><span class="badge badge-industry">${escapeHtml(r.industry || '-')}</span></td>` : '';
+                    return `<tr><td><strong style="color: var(--text-primary);">${escapeHtml(r.name)}</strong></td><td><span class="badge ${getStageBadge(r.stage)}">${escapeHtml(r.stage)}</span></td>${industryCell}<td>${escapeHtml(r.owner)}</td><td><span class="badge badge-territory">${escapeHtml(r.territory)}</span></td><td><span class="money ${moneyClass}">${formatMoney(r.arr)}</span></td><td><span class="money">${formatMoney(r.iyrr)}</span></td><td><div class="prob-cell"><div class="prob-bar"><div class="prob-fill ${probClass}" style="width: ${probPct}%"></div></div><span style="font-weight:600">${formatPct(r.probability)}</span></div></td><td><span class="money ${weightedClass}">${formatMoney(r.weighted)}</span></td><td><span class="badge badge-bucket">${escapeHtml(r.bucket)}</span></td><td>${escapeHtml(goLiveDate)}</td></tr>`;
                 }).join('');
             }
-            
-            document.getElementById('pageInfo').textContent = 
-                `Page ${currentPage} of ${totalPages} • ${filteredData.length.toLocaleString()} results`;
-            document.getElementById('prevPage').disabled = currentPage === 1;
-            document.getElementById('nextPage').disabled = currentPage >= totalPages;
+            document.getElementById('pageInfo').textContent = `Page ${currentPage} of ${totalPages} • ${filteredData.length.toLocaleString()} results`;
+            document.getElementById('prevPage').disabled = currentPage === 1; document.getElementById('nextPage').disabled = currentPage >= totalPages;
         }
 
-        // ==================== GRÁFICOS - CON ORDEN DE STAGES DEFINIDO ====================
+        // ==================== GRÁFICOS ====================
         function updateCharts() {
-            const data = filteredData.length > 0 ? filteredData : pipelineData;
-            if (data.length === 0) return;
-            
+            const data = filteredData.length > 0 ? filteredData : pipelineData; if (data.length === 0) return;
             Object.values(charts).forEach(c => { if (c) c.destroy(); });
-            
-            const stageData = {}, territoryData = {}, ownerData = {}, bucketData = { '0-3': 0, '3-9': 0, '9+': 0 };
-            
+            const stageData = {}, territoryData = {}, ownerData = {}, bucketData = { '0-3': 0, '3-9': 0, '9+': 0 }, industryData = {};
             data.forEach(r => {
                 if (r.stage) stageData[r.stage] = (stageData[r.stage] || 0) + (r.arr || 0);
                 if (r.territory) territoryData[r.territory] = (territoryData[r.territory] || 0) + (r.arr || 0);
                 if (r.owner) ownerData[r.owner] = (ownerData[r.owner] || 0) + (r.arr || 0);
-                if (r.bucket.includes('0-3')) bucketData['0-3'] += r.arr || 0;
-                else if (r.bucket.includes('3-9')) bucketData['3-9'] += r.arr || 0;
-                else bucketData['9+'] += r.arr || 0;
+                if (r.bucket.includes('0-3')) bucketData['0-3'] += r.arr || 0; else if (r.bucket.includes('3-9')) bucketData['3-9'] += r.arr || 0; else bucketData['9+'] += r.arr || 0;
+                // 🆕 Industry data
+                if (hasIndustryData && r.industry) industryData[r.industry] = (industryData[r.industry] || 0) + (r.arr || 0);
             });
+            const chartColors = { violet: '#7350C1', violetLight: '#8b6dd9', mint: '#49F2B1', mintDark: '#2dd49a', warning: '#f59e0b', purple: '#a78bfa', danger: '#ef4444' };
             
-            // 🎨 Paleta Huboo Dark para gráficos
-            const chartColors = {
-                violet: '#7350C1',
-                violetLight: '#8b6dd9',
-                mint: '#49F2B1',
-                mintDark: '#2dd49a',
-                warning: '#f59e0b',
-                purple: '#a78bfa',
-                danger: '#ef4444'
-            };
-            
-            // 📊 Stage Chart - CON ORDEN DEFINIDO POR EL USUARIO
-            const sortedStageEntries = Object.entries(stageData)
-                .sort((a, b) => getStageOrderIndex(a[0]) - getStageOrderIndex(b[0]));
-            
-            charts.stage = new Chart(document.getElementById('stageChart'), {
-                type: 'bar',
-                data: { 
-                    labels: sortedStageEntries.map(e => e[0]), 
-                    datasets: [{ 
-                        label: 'ARR', 
-                        data: sortedStageEntries.map(e => e[1]), 
-                        backgroundColor: chartColors.violet,
-                        borderColor: chartColors.violetLight,
-                        borderWidth: 1,
-                        borderRadius: 12,
-                        borderSkipped: false,
-                    }] 
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    animation: { duration: 700, easing: 'easeOutQuart' },
-                    plugins: { 
-                        legend: { display: false }, 
-                        tooltip: { 
-                            callbacks: { label: ctx => `${formatMoney(ctx.parsed.y)}` } 
-                        } 
-                    }, 
-                    scales: { 
-                        y: { 
-                            beginAtZero: true, 
-                            grid: { color: 'rgba(115, 80, 193, 0.15)' },
-                            ticks: { callback: v => formatMoney(v), color: '#7a6b99' } 
-                        },
-                        x: {
-                            grid: { display: false },
-                            ticks: { color: '#7a6b99', maxRotation: 45, minRotation: 45 }
-                        }
-                    } 
-                }
-            });
+            // 📊 Stage Chart - ORDEN DEFINIDO
+            const sortedStageEntries = Object.entries(stageData).sort((a, b) => getStageOrderIndex(a[0]) - getStageOrderIndex(b[0]));
+            charts.stage = new Chart(document.getElementById('stageChart'), { type: 'bar', data: { labels: sortedStageEntries.map(e => e[0]), datasets: [{ label: 'ARR', data: sortedStageEntries.map(e => e[1]), backgroundColor: chartColors.violet, borderColor: chartColors.violetLight, borderWidth: 1, borderRadius: 12, borderSkipped: false }] }, options: { responsive: true, maintainAspectRatio: false, animation: { duration: 700, easing: 'easeOutQuart' }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${formatMoney(ctx.parsed.y)}` } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(115, 80, 193, 0.15)' }, ticks: { callback: v => formatMoney(v), color: '#7a6b99' } }, x: { grid: { display: false }, ticks: { color: '#7a6b99', maxRotation: 45, minRotation: 45 } } } } });
             
             // 🌍 Territory Chart
-            charts.territory = new Chart(document.getElementById('territoryChart'), {
-                type: 'doughnut',
-                data: { 
-                    labels: Object.keys(territoryData), 
-                    datasets: [{ 
-                        data: Object.values(territoryData), 
-                        backgroundColor: [chartColors.violet, chartColors.mint, chartColors.warning, chartColors.purple, chartColors.danger],
-                        borderWidth: 3,
-                        borderColor: '#1a1429',
-                        spacing: 5,
-                    }] 
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    animation: { animateRotate: true, animateScale: true },
-                    plugins: { 
-                        legend: { position: 'bottom', labels: { padding: 22, usePointStyle: true, pointStyle: 'circle', color: '#b8a9d9' } }, 
-                        tooltip: { callbacks: { label: ctx => `${ctx.label}: ${formatMoney(ctx.parsed)}` } } 
-                    } 
-                }
-            });
+            charts.territory = new Chart(document.getElementById('territoryChart'), { type: 'doughnut', data: { labels: Object.keys(territoryData), datasets: [{ data: Object.values(territoryData), backgroundColor: [chartColors.violet, chartColors.mint, chartColors.warning, chartColors.purple, chartColors.danger], borderWidth: 3, borderColor: '#1a1429', spacing: 5 }] }, options: { responsive: true, maintainAspectRatio: false, animation: { animateRotate: true, animateScale: true }, plugins: { legend: { position: 'bottom', labels: { padding: 22, usePointStyle: true, pointStyle: 'circle', color: '#b8a9d9' } }, tooltip: { callbacks: { label: ctx => `${ctx.label}: ${formatMoney(ctx.parsed)}` } } } } });
+            
+            // 🆕 Industry Chart (solo si hay datos)
+            if (hasIndustryData && Object.keys(industryData).length > 0) {
+                const sortedIndustry = Object.entries(industryData).sort((a, b) => b[1] - a[1]).slice(0, 8);
+                charts.industry = new Chart(document.getElementById('industryChart'), { type: 'bar', data: { labels: sortedIndustry.map(e => e[0]), datasets: [{ label: 'ARR', data: sortedIndustry.map(e => e[1]), backgroundColor: chartColors.purple, borderColor: '#8b5cf6', borderWidth: 1, borderRadius: 12, borderSkipped: false }] }, options: { responsive: true, maintainAspectRatio: false, animation: { duration: 700 }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${formatMoney(ctx.parsed.y)}` } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(115, 80, 193, 0.15)' }, ticks: { callback: v => formatMoney(v), color: '#7a6b99' } }, x: { grid: { display: false }, ticks: { color: '#7a6b99', maxRotation: 45, minRotation: 45 } } } } });
+            }
             
             // 👥 Owner Chart
             const sortedOwners = Object.entries(ownerData).sort((a, b) => b[1] - a[1]).slice(0, 8);
-            charts.owner = new Chart(document.getElementById('ownerChart'), {
-                type: 'bar',
-                data: { 
-                    labels: sortedOwners.map(o => o[0]), 
-                    datasets: [{ 
-                        label: 'ARR', 
-                        data: sortedOwners.map(o => o[1]), 
-                        backgroundColor: chartColors.mint,
-                        borderColor: chartColors.mintDark,
-                        borderWidth: 1,
-                        borderRadius: 12,
-                        borderSkipped: false,
-                    }] 
-                },
-                options: { 
-                    indexAxis: 'y', 
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    animation: { duration: 700 },
-                    plugins: { 
-                        legend: { display: false }, 
-                        tooltip: { callbacks: { label: ctx => `${formatMoney(ctx.parsed.x)}` } } 
-                    }, 
-                    scales: { 
-                        x: { grid: { color: 'rgba(115, 80, 193, 0.15)' }, ticks: { callback: v => formatMoney(v), color: '#7a6b99' } },
-                        y: { grid: { display: false }, ticks: { color: '#7a6b99' } }
-                    } 
-                }
-            });
+            charts.owner = new Chart(document.getElementById('ownerChart'), { type: 'bar', data: { labels: sortedOwners.map(o => o[0]), datasets: [{ label: 'ARR', data: sortedOwners.map(o => o[1]), backgroundColor: chartColors.mint, borderColor: chartColors.mintDark, borderWidth: 1, borderRadius: 12, borderSkipped: false }] }, options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, animation: { duration: 700 }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${formatMoney(ctx.parsed.x)}` } } }, scales: { x: { grid: { color: 'rgba(115, 80, 193, 0.15)' }, ticks: { callback: v => formatMoney(v), color: '#7a6b99' } }, y: { grid: { display: false }, ticks: { color: '#7a6b99' } } } } });
             
             // ⏰ Bucket Chart
-            charts.bucket = new Chart(document.getElementById('bucketChart'), {
-                type: 'bar',
-                data: { 
-                    labels: ['0-3 Months', '3-9 Months', '9+ Months'], 
-                    datasets: [{ 
-                        label: 'ARR', 
-                        data: [bucketData['0-3'], bucketData['3-9'], bucketData['9+']], 
-                        backgroundColor: [chartColors.mint, chartColors.warning, chartColors.purple],
-                        borderColor: [chartColors.mintDark, '#d97706', '#8b5cf6'],
-                        borderWidth: 1,
-                        borderRadius: 12,
-                        borderSkipped: false,
-                    }] 
-                },
-                options: { 
-                    responsive: true, 
-                    maintainAspectRatio: false,
-                    animation: { duration: 700 },
-                    plugins: { 
-                        legend: { display: false }, 
-                        tooltip: { callbacks: { label: ctx => `${formatMoney(ctx.parsed.y)}` } } 
-                    }, 
-                    scales: { 
-                        y: { beginAtZero: true, grid: { color: 'rgba(115, 80, 193, 0.15)' }, ticks: { callback: v => formatMoney(v), color: '#7a6b99' } },
-                        x: { grid: { display: false }, ticks: { color: '#7a6b99' } }
-                    } 
-                }
-            });
-        }
-
-        // ==================== EXPORTAR PDF ====================
-        function exportToPDF() {
-            const element = document.getElementById('dashboardContent');
-            const btn = document.getElementById('btnExportPDF');
-            
-            const toHide = ['dataZone', 'summaryZone', 'filtersSection', 'dateFilterSection', 'pagination', 'actionBar'];
-            const originalDisplay = {};
-            
-            toHide.forEach(id => {
-                const el = document.getElementById(id);
-                if (el) {
-                    originalDisplay[id] = el.style.display;
-                    el.style.display = 'none';
-                }
-            });
-            
-            btn.disabled = true;
-            btn.innerHTML = '<span>⏳</span> Generating...';
-            
-            html2pdf().set({ 
-                margin: 12, 
-                filename: `Huboo_Pipeline_${new Date().toISOString().slice(0,10)}.pdf`, 
-                image: { type: 'jpeg', quality: 0.95 }, 
-                html2canvas: { scale: 2, useCORS: true, backgroundColor: '#0f0a1a', logging: false }, 
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'landscape' } 
-            }).from(element).save().then(() => {
-                toHide.forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el && originalDisplay[id] !== undefined) el.style.display = originalDisplay[id];
-                });
-                btn.disabled = false;
-                btn.innerHTML = '<span>📥</span> Export to PDF';
-                showAlert('success', '✅ PDF exported successfully!');
-            }).catch(err => {
-                console.error('PDF export error:', err);
-                showAlert('error', '❌ Error exporting PDF');
-                btn.disabled = false;
-                btn.innerHTML = '<span>📥</span> Export to PDF';
-            });
+            charts.bucket = new Chart(document.getElementById('bucketChart'), { type: 'bar', data: { labels: ['0-3 Months', '3-9 Months', '9+ Months'], datasets: [{ label: 'ARR', data: [bucketData['0-3'], bucketData['3-9'], bucketData['9+']], backgroundColor: [chartColors.mint, chartColors.warning, chartColors.purple], borderColor: [chartColors.mintDark, '#d97706', '#8b5cf6'], borderWidth: 1, borderRadius: 12, borderSkipped: false }] }, options: { responsive: true, maintainAspectRatio: false, animation: { duration: 700 }, plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => `${formatMoney(ctx.parsed.y)}` } } }, scales: { y: { beginAtZero: true, grid: { color: 'rgba(115, 80, 193, 0.15)' }, ticks: { callback: v => formatMoney(v), color: '#7a6b99' } }, x: { grid: { display: false }, ticks: { color: '#7a6b99' } } } } });
         }
 
         // ==================== EVENT LISTENERS ====================
         document.addEventListener('DOMContentLoaded', () => {
-            ['ownerFilter', 'stageFilter', 'bucketFilter', 'territoryFilter'].forEach(id => { 
-                document.getElementById(id)?.addEventListener('change', applyFilters); 
-            });
-            document.getElementById('searchInput')?.addEventListener('input', () => {
-                clearTimeout(window.searchTimeout);
-                window.searchTimeout = setTimeout(applyFilters, 300);
-            });
+            ['ownerFilter', 'stageFilter', 'bucketFilter', 'territoryFilter'].forEach(id => { document.getElementById(id)?.addEventListener('change', applyFilters); });
+            if (hasIndustryData) document.getElementById('industryFilter')?.addEventListener('change', applyFilters);
+            document.getElementById('searchInput')?.addEventListener('input', () => { clearTimeout(window.searchTimeout); window.searchTimeout = setTimeout(applyFilters, 300); });
             document.getElementById('applyFilters')?.addEventListener('click', applyFilters);
-            document.getElementById('clearFilters')?.addEventListener('click', () => { 
-                ['ownerFilter', 'stageFilter', 'bucketFilter', 'territoryFilter'].forEach(id => document.getElementById(id).value = '');
-                document.getElementById('searchInput').value = '';
-                applyFilters(); 
-            });
+            document.getElementById('clearFilters')?.addEventListener('click', () => { ['ownerFilter', 'stageFilter', 'bucketFilter', 'territoryFilter'].forEach(id => document.getElementById(id).value = ''); if (hasIndustryData) document.getElementById('industryFilter').value = ''; document.getElementById('searchInput').value = ''; applyFilters(); });
             document.getElementById('prevPage')?.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderTable(); } });
             document.getElementById('nextPage')?.addEventListener('click', () => { if (currentPage < Math.ceil(filteredData.length / rowsPerPage)) { currentPage++; renderTable(); } });
-            
-            document.querySelectorAll('th[data-sort]').forEach(th => { 
-                th.addEventListener('click', () => { 
-                    const col = th.dataset.sort; 
-                    sortDirection = sortColumn === col ? (sortDirection === 'asc' ? 'desc' : 'asc') : 'desc'; 
-                    sortColumn = col; 
-                    document.querySelectorAll('th').forEach(t => t.classList.remove('sorted-asc', 'sorted-desc')); 
-                    th.classList.add(sortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc'); 
-                    applyFilters(); 
-                }); 
-            });
-            
-            document.addEventListener('keydown', (e) => {
-                if (e.ctrlKey && e.key === 'p') { e.preventDefault(); exportToPDF(); }
-            });
+            document.querySelectorAll('th[data-sort]').forEach(th => { th.addEventListener('click', () => { const col = th.dataset.sort; sortDirection = sortColumn === col ? (sortDirection === 'asc' ? 'desc' : 'asc') : 'desc'; sortColumn = col; document.querySelectorAll('th').forEach(t => t.classList.remove('sorted-asc', 'sorted-desc')); th.classList.add(sortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc'); applyFilters(); }); });
+            document.addEventListener('keydown', (e) => { if (e.ctrlKey && e.key === 'p') { e.preventDefault(); showAlert('info', '📄 PDF export removed. Use browser print (Ctrl+P) for reports.'); } });
         });
-
-        // Prevenir drag & drop global
-        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
-            document.body.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }, false);
-        });
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => { document.body.addEventListener(eventName, (e) => { e.preventDefault(); e.stopPropagation(); }, false); });
     </script>
 </body>
 </html>
